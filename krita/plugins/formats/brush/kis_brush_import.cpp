@@ -108,8 +108,9 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
 
         KisImagePipeBrush *pipeBrush = dynamic_cast<KisImagePipeBrush*>(brush);
         if (pipeBrush) {
-            KisPaintLayerSP previous = 0;
-            foreach(const KisGbrBrush *subbrush, pipeBrush->brushes()) {
+            QVector<KisGbrBrush*> brushes = pipeBrush->brushes();
+            for(int i = brushes.size(); i > 0; i--) {
+                KisGbrBrush *subbrush = brushes.at(i - 1);
                 const KoColorSpace *subColorSpace = 0;
                 if (brush->hasColor()) {
                     subColorSpace = KoColorSpaceRegistry::instance()->rgb8();
@@ -119,14 +120,13 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
                 }
                 KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255, subColorSpace);
                 layer->paintDevice()->convertFromQImage(subbrush->brushTipImage(), 0, 0, 0);
-                image->addNode(layer, image->rootLayer(), previous);
-                previous = layer;
+                image->addNode(layer, image->rootLayer());
             }
         }
         else {
             KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255, colorSpace);
             layer->paintDevice()->convertFromQImage(brush->brushTipImage(), 0, 0, 0);
-            image->addNode(layer, image->rootLayer());
+            image->addNode(layer, image->rootLayer(), 0);
         }
 
         doc->setCurrentImage(image);

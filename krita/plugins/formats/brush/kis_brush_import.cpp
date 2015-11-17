@@ -97,21 +97,16 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
         doc->prepareForImport();
 
         const KoColorSpace *colorSpace = 0;
-        switch(brush->brushType()) {
-        case MASK:
-        case PIPE_MASK:
-            colorSpace = KoColorSpaceRegistry::instance()->colorSpace(GrayAColorModelID.id(), Integer8BitsColorDepthID.id(), "");
-            break;
-        case IMAGE:
-        case PIPE_IMAGE:
+        if (brush->hasColor()) {
             colorSpace = KoColorSpaceRegistry::instance()->rgb8();
-
-            break;
-        default:
-            return KisImportExportFilter::InvalidFormat;
         }
+        else {
+            colorSpace = KoColorSpaceRegistry::instance()->colorSpace(GrayAColorModelID.id(), Integer8BitsColorDepthID.id(), "");
+        }
+
         KisImageWSP image = new KisImage(doc->createUndoStore(), brush->width(), brush->height(), colorSpace, brush->name());
-        KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255);
+
+        KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255, colorSpace);
         layer->paintDevice()->convertFromQImage(brush->brushTipImage(), 0, 0, 0);
         image->addNode(layer.data(), image->rootLayer().data());
 

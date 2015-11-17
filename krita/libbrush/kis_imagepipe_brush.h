@@ -123,7 +123,7 @@ private:
     void testingSelectNextBrush(const KisPaintInformation& info) const;
 
     bool initFromData(const QByteArray &data);
-    void sanitize(); // Force some default values in case the ones read in don't make sense
+
 private:
     struct Private;
     Private * const m_d;

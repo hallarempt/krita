@@ -178,7 +178,7 @@ KisApplication::KisApplication(const QString &key, int &argc, char **argv)
 #endif
 
     qDebug() << "Available styles:" << QStyleFactory::keys();
-    QStringList styles = QStringList() /*<< "Breeze"*/ << "GTK+" << "Fusion" << "Oxygen" << "Plastique";
+    QStringList styles = QStringList() /*<< "Breeze"*/ << "Fusion" << "Oxygen" << "Plastique";
     foreach(const QString & style, styles) {
         if (!setStyle(style)) {
             qDebug() << "No" << style << "available.";

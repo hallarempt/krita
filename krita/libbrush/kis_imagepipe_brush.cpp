@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 #include "kis_imagepipe_brush.h"
-#include "kis_imagepipe_brush_p.h"
+#include "kis_pipebrush_parasite.h"
 #include "kis_brushes_pipe.h"
 
 

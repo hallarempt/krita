@@ -455,7 +455,7 @@ void KisImagePipeBrush::setBrushType(enumBrushType type)
 {
     Q_UNUSED(type);
     qFatal("FATAL: protected member setBrushType has no meaning for KisImagePipeBrush");
-    // brushType() is a finction of hasColor() and useColorAsMask()
+    // brushType() is a function of hasColor() and useColorAsMask()
 }
 
 void KisImagePipeBrush::setHasColor(bool hasColor)

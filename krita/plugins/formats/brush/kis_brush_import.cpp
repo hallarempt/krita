@@ -72,7 +72,7 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
         }
 
 
-        KisBrush *brush = 0;
+        KisBrush *brush;
 
         if (from == "image/x-gimp-brush") {
             brush = new KisGbrBrush(filename);
@@ -80,18 +80,25 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
         else if (from == "image/x-gimp-brush-animated") {
             brush = new KisImagePipeBrush(filename);
         }
+        else {
+            return KisImportExportFilter::BadMimeType;
+        }
+
 
         if (!brush->load()) {
+            delete brush;
             return KisImportExportFilter::InvalidFormat;
         }
 
         if (!brush->valid()) {
+            delete brush;
             return KisImportExportFilter::InvalidFormat;
         }
 
         KisDocument * doc = m_chain->outputDocument();
 
         if (!doc) {
+            delete brush;
             return KisImportExportFilter::NoDocumentCreated;
         }
 
@@ -106,6 +113,7 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
         }
 
         KisImageWSP image = new KisImage(doc->createUndoStore(), brush->width(), brush->height(), colorSpace, brush->name());
+        image->setProperty("brushspacing", brush->spacing());
 
         KisImagePipeBrush *pipeBrush = dynamic_cast<KisImagePipeBrush*>(brush);
         if (pipeBrush) {
@@ -133,6 +141,7 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
         }
 
         doc->setCurrentImage(image);
+        delete brush;
         return KisImportExportFilter::OK;
     }
 

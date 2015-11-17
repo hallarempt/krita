@@ -27,6 +27,7 @@
 #include "kis_gbr_brush.h"
 #include "kis_global.h"
 
+class KisPipeBrushParasite;
 
 /**
  * Velocity won't be supported, atm Tilt isn't either,
@@ -108,6 +109,7 @@ public:
     QVector<KisGbrBrush*> brushes() const;
 
 
+    const KisPipeBrushParasite &parasite() const;
 protected:
     void setBrushType(enumBrushType type);
     void setHasColor(bool hasColor);

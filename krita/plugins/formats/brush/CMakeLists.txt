@@ -1,5 +1,6 @@
 set(kritabrushexport_PART_SRCS
     kis_brush_export.cpp
+    KisAnimatedBrushAnnotation.cpp
     )
 
 ki18n_wrap_ui(kritabrushexport_PART_SRCS )
@@ -13,6 +14,7 @@ install(TARGETS kritabrushexport  DESTINATION ${CALLIGRA_PLUGIN_INSTALL_DIR})
 
 set(kritabrushimport_PART_SRCS
     kis_brush_import.cpp
+    KisAnimatedBrushAnnotation.cpp
     )
 
 ki18n_wrap_ui(kritabrushimport_PART_SRCS )

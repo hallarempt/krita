@@ -475,3 +475,7 @@ void KisImagePipeBrush::testingSelectNextBrush(const KisPaintInformation& info) 
 {
     return m_d->brushesPipe.testingSelectNextBrush(info);
 }
+
+const KisPipeBrushParasite& KisImagePipeBrush::parasite() const {
+    return m_d->brushesPipe.parasite();
+}

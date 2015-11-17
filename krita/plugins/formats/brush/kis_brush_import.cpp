@@ -43,6 +43,7 @@
 
 #include <kis_gbr_brush.h>
 #include <kis_imagepipe_brush.h>
+#include <KisAnimatedBrushAnnotation.h>
 
 K_PLUGIN_FACTORY_WITH_JSON(KisBrushImportFactory, "krita_brush_import.json", registerPlugin<KisBrushImport>();)
 
@@ -122,6 +123,8 @@ KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray
                 layer->paintDevice()->convertFromQImage(subbrush->brushTipImage(), 0, 0, 0);
                 image->addNode(layer, image->rootLayer());
             }
+            KisAnnotationSP ann = new KisAnimatedBrushAnnotation(pipeBrush->parasite());
+            image->addAnnotation(ann);
         }
         else {
             KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255, colorSpace);

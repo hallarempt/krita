@@ -28,16 +28,21 @@
 #include <QUrl>
 
 #include <KoColorSpace.h>
-#include <KisFilterChain.h>
 #include <KoColorSpaceRegistry.h>
+#include <KoColorModelStandardIds.h>
+
+#include <KisFilterChain.h>
+#include <KisDocument.h>
 
 #include <kis_transaction.h>
 #include <kis_paint_device.h>
-#include <KisDocument.h>
 #include <kis_image.h>
 #include <kis_paint_layer.h>
 #include <kis_node.h>
 #include <kis_group_layer.h>
+
+#include <kis_gbr_brush.h>
+#include <kis_imagepipe_brush.h>
 
 K_PLUGIN_FACTORY_WITH_JSON(KisBrushImportFactory, "krita_brush_import.json", registerPlugin<KisBrushImport>();)
 
@@ -52,45 +57,68 @@ KisBrushImport::~KisBrushImport()
 
 KisImportExportFilter::ConversionStatus KisBrushImport::convert(const QByteArray& from, const QByteArray& to)
 {
-    dbgFile << "Brush import! From:" << from << ", To:" << to << 0;
+    qDebug() << "Brush import! From:" << from << ", To:" << to << m_chain->inputFile();
 
     if (to != "application/x-krita")
         return KisImportExportFilter::BadMimeType;
 
-    KisDocument * doc = m_chain->outputDocument();
-
-    if (!doc)
-        return KisImportExportFilter::NoDocumentCreated;
-
     QString filename = m_chain->inputFile();
 
-    doc->prepareForImport();
-
     if (!filename.isEmpty()) {
-        QUrl url(filename);
 
-        if (url.isEmpty())
-            return KisImportExportFilter::FileNotFound;
-
-        if (!url.isLocalFile()) {
+        if (!QFile(filename).exists()) {
             return KisImportExportFilter::FileNotFound;
         }
 
 
-        QString localFile = url.toLocalFile();
+        KisBrush *brush = 0;
 
-        QFile f(localFile);
-        f.open(QIODevice::ReadOnly);
-//        const KoColorSpace *colorSpace = KoColorSpaceRegistry::instance()->rgb8();
-//        KisImageSP image = new KisImage(doc->createUndoStore(), img.width(), img.height(), colorSpace, "imported from tga");
+        if (from == "image/x-gimp-brush") {
+            brush = new KisGbrBrush(filename);
+        }
+        else if (from == "image/x-gimp-brush-animated") {
+            brush = new KisImagePipeBrush(filename);
+        }
 
-//        KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255);
-//        layer->paintDevice()->convertFromQImage(img, 0, 0, 0);
-//        image->addNode(layer.data(), image->rootLayer().data());
+        if (!brush->load()) {
+            return KisImportExportFilter::InvalidFormat;
+        }
 
-//        doc->setCurrentImage(image);
+        if (!brush->valid()) {
+            return KisImportExportFilter::InvalidFormat;
+        }
+
+        KisDocument * doc = m_chain->outputDocument();
+
+        if (!doc) {
+            return KisImportExportFilter::NoDocumentCreated;
+        }
+
+        doc->prepareForImport();
+
+        const KoColorSpace *colorSpace = 0;
+        switch(brush->brushType()) {
+        case MASK:
+        case PIPE_MASK:
+            colorSpace = KoColorSpaceRegistry::instance()->colorSpace(GrayAColorModelID.id(), Integer8BitsColorDepthID.id(), "");
+            break;
+        case IMAGE:
+        case PIPE_IMAGE:
+            colorSpace = KoColorSpaceRegistry::instance()->rgb8();
+
+            break;
+        default:
+            return KisImportExportFilter::InvalidFormat;
+        }
+        KisImageWSP image = new KisImage(doc->createUndoStore(), brush->width(), brush->height(), colorSpace, brush->name());
+        KisPaintLayerSP layer = new KisPaintLayer(image, image->nextLayerName(), 255);
+        layer->paintDevice()->convertFromQImage(brush->brushTipImage(), 0, 0, 0);
+        image->addNode(layer.data(), image->rootLayer().data());
+
+        doc->setCurrentImage(image);
         return KisImportExportFilter::OK;
     }
+
     return KisImportExportFilter::StorageCreationError;
 
 }

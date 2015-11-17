@@ -105,6 +105,8 @@ public:
             double subPixelX = 0, double subPixelY = 0, qreal softnessFactor = DEFAULT_SOFTNESS_FACTOR) const;
 
 
+    QVector<KisGbrBrush*> brushes() const;
+
 
 protected:
     void setBrushType(enumBrushType type);
@@ -119,7 +121,6 @@ private:
     friend class KisImagePipeBrushTest;
 
     KisGbrBrush* testingGetCurrentBrush(const KisPaintInformation& info) const;
-    QVector<KisGbrBrush*> testingGetBrushes() const;
     void testingSelectNextBrush(const KisPaintInformation& info) const;
 
     bool initFromData(const QByteArray &data);

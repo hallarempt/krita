@@ -363,6 +363,11 @@ void KisImagePipeBrush::generateMaskAndApplyMaskOrCreateDab(KisFixedPaintDeviceS
     m_d->brushesPipe.generateMaskAndApplyMaskOrCreateDab(dst, coloringInformation, scaleX, scaleY, angle, info, subPixelX, subPixelY, softnessFactor);
 }
 
+QVector<KisGbrBrush *> KisImagePipeBrush::brushes() const
+{
+    return m_d->brushesPipe.brushes();
+}
+
 KisFixedPaintDeviceSP KisImagePipeBrush::paintDevice(const KoColorSpace * colorSpace, double scale, double angle, const KisPaintInformation& info, double subPixelX, double subPixelY) const
 {
     return m_d->brushesPipe.paintDevice(colorSpace, scale, angle, info, subPixelX, subPixelY);
@@ -465,10 +470,6 @@ KisGbrBrush* KisImagePipeBrush::testingGetCurrentBrush(const KisPaintInformation
     return m_d->brushesPipe.currentBrush(info);
 }
 
-QVector<KisGbrBrush*> KisImagePipeBrush::testingGetBrushes() const
-{
-    return m_d->brushesPipe.testingGetBrushes();
-}
 
 void KisImagePipeBrush::testingSelectNextBrush(const KisPaintInformation& info) const
 {

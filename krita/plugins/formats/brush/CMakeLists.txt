@@ -3,12 +3,14 @@ set(kritabrushexport_PART_SRCS
     KisAnimatedBrushAnnotation.cpp
     )
 
-ki18n_wrap_ui(kritabrushexport_PART_SRCS )
+ki18n_wrap_ui(kritabrushexport_PART_SRCS  
+    wdg_export_gbr.ui
+)
 
 add_library(kritabrushexport MODULE ${kritabrushexport_PART_SRCS})
 kcoreaddons_desktop_to_json(kritabrushexport krita_brush_export.desktop)
 
-target_link_libraries(kritabrushexport kritalibbrush kritaui)
+target_link_libraries(kritabrushexport kritalibbrush kritalibpaintop kritaui)
 
 install(TARGETS kritabrushexport  DESTINATION ${CALLIGRA_PLUGIN_INSTALL_DIR})
 

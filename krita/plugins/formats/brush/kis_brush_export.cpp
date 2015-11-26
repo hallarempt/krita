@@ -32,6 +32,12 @@
 #include <KisDocument.h>
 #include <kis_image.h>
 #include <kis_paint_layer.h>
+#include <kis_gbr_brush.h>
+#include <kis_imagepipe_brush.h>
+#include <KisAnimatedBrushAnnotation.h>
+#include <KisImportExportManager.h>
+
+#include <ui_wdg_export_gbr.h>
 
 K_PLUGIN_FACTORY_WITH_JSON(KisBrushExportFactory, "krita_brush_export.json", registerPlugin<KisBrushExport>();)
 
@@ -45,7 +51,7 @@ KisBrushExport::~KisBrushExport()
 
 KisImportExportFilter::ConversionStatus KisBrushExport::convert(const QByteArray& from, const QByteArray& to)
 {
-    dbgFile << "Brush export! From:" << from << ", To:" << to << "";
+    qDebug() << "Brush export! From:" << from << ", To:" << to << "";
 
     KisDocument *input = m_chain->inputDocument();
     QString filename = m_chain->outputFile();
@@ -58,20 +64,56 @@ KisImportExportFilter::ConversionStatus KisBrushExport::convert(const QByteArray
     if (from != "application/x-krita")
         return KisImportExportFilter::NotImplemented;
 
-    qApp->processEvents(); // For vector layers to be updated
-    input->image()->waitForDone();
 
+    KoDialog* dlgBrushExportOptions = new KoDialog(0);
+    dlgBrushExportOptions->setWindowTitle(i18n("Brush Tip Export Options"));
+    dlgBrushExportOptions->setButtons(KoDialog::Ok | KoDialog::Cancel);
+
+
+    KisBrush *brush;
+
+    if (to == "image/x-gimp-brush") {
+        brush = new KisGbrBrush(filename);
+
+        Ui::WdgExportGbr wdgUi;
+        QWidget* wdg = new QWidget(dlgBrushExportOptions);
+        wdgUi.setupUi(wdg);
+        dlgBrushExportOptions->setMainWidget(wdg);
+
+    }
+    else if (to == "image/x-gimp-brush-animated") {
+        brush = new KisImagePipeBrush(filename);
+    }
+    else {
+        delete dlgBrushExportOptions;
+        return KisImportExportFilter::BadMimeType;
+    }
+
+    if (!m_chain->manager()->getBatchMode()) {
+        if (dlgBrushExportOptions->exec() == QDialog::Rejected) {
+            delete dlgBrushExportOptions;
+            return KisImportExportFilter::UserCancelled;
+        }
+    }
+    else {
+        qApp->processEvents(); // For vector layers to be updated
+    }
+    input->image()->waitForDone();
     QRect rc = input->image()->bounds();
     input->image()->refreshGraph();
     input->image()->lock();
     QImage image = input->image()->projection()->convertToQImage(0, 0, 0, rc.width(), rc.height(), KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
     input->image()->unlock();
 
+
+
     QFile f(filename);
     f.open(QIODevice::WriteOnly);
     QDataStream s(&f);
     s.setByteOrder(QDataStream::LittleEndian);
 
+
+    delete dlgBrushExportOptions;
 
     return KisImportExportFilter::OK;
 }

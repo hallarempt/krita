@@ -5,6 +5,7 @@ set(kritabrushexport_PART_SRCS
 
 ki18n_wrap_ui(kritabrushexport_PART_SRCS  
     wdg_export_gbr.ui
+    wdg_export_gih.ui
 )
 
 add_library(kritabrushexport MODULE ${kritabrushexport_PART_SRCS})

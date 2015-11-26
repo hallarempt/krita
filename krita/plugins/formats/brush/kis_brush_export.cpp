@@ -38,6 +38,7 @@
 #include <KisImportExportManager.h>
 
 #include <ui_wdg_export_gbr.h>
+#include <ui_wdg_export_gih.h>
 
 K_PLUGIN_FACTORY_WITH_JSON(KisBrushExportFactory, "krita_brush_export.json", registerPlugin<KisBrushExport>();)
 
@@ -83,6 +84,12 @@ KisImportExportFilter::ConversionStatus KisBrushExport::convert(const QByteArray
     }
     else if (to == "image/x-gimp-brush-animated") {
         brush = new KisImagePipeBrush(filename);
+
+        Ui::WdgExportGih wdgUi;
+        QWidget* wdg = new QWidget(dlgBrushExportOptions);
+        wdgUi.setupUi(wdg);
+        dlgBrushExportOptions->setMainWidget(wdg);
+
     }
     else {
         delete dlgBrushExportOptions;

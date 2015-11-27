@@ -1,5 +1,5 @@
 
-set(KRITA_PALETTEDOCKER_PART_SRCS colorsetchooser.cpp palettemodel.cpp palettedocker.cpp palettedocker_dock.cpp )
+set(KRITA_PALETTEDOCKER_PART_SRCS palettedocker.cpp palettedocker_dock.cpp )
 
 ki18n_wrap_ui(KRITA_PALETTEDOCKER_PART_SRCS
     wdgpalettedock.ui

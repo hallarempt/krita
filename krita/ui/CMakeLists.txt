@@ -339,6 +339,9 @@ set(kritaui_LIB_SRCS
     KisNetworkAccessManager.cpp
     KisWelcomeScreen.cpp
     KisMultiFeedRSSModel.cpp
+
+    KisPaletteModel.cpp
+    KisColorsetChooser.cpp
 )
 
 if(WIN32)

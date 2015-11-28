@@ -1,0 +1,6 @@
+set(kritaautofillfilter_SRCS AutofillFilter.cpp WdgAutofill.cpp)
+ki18n_wrap_ui(kritaautofillfilter_SRCS WdgAutofillOptions.ui)
+add_library(kritaautofillfilter MODULE ${kritaautofillfilter_SRCS})
+kcoreaddons_desktop_to_json(kritaautofillfilter kritaautofillfilter.desktop)
+target_link_libraries(kritaautofillfilter kritaui)
+install(TARGETS kritaautofillfilter  DESTINATION ${CALLIGRA_PLUGIN_INSTALL_DIR})

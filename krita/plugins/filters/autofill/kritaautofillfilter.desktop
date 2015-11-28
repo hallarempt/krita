@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Automatically fill an image from a palette
+Name=Automatic Fill Filter
+X-KDE-ServiceTypes=Krita/Filter
+Type=Service
+X-KDE-Library=kritaautofillfilter
+X-Krita-Version=28

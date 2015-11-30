@@ -115,7 +115,7 @@ quint32 decode_packbits(const char *src, char* dst, quint16 packed_len, quint32 
         if (n < 0)        /* replicate next gchar |n|+ 1 times */
         {
             n  = 1 - n;
-            if (! pack_left)
+            if (!pack_left)
             {
                 dbgFile << "Input buffer exhausted in replicate";
                 error_code = 1;
@@ -129,7 +129,7 @@ quint32 decode_packbits(const char *src, char* dst, quint16 packed_len, quint32 
             dat = *src;
             for (; n > 0; --n)
             {
-                if (! unpack_left)
+                if (!unpack_left)
                     break;
                 *dst = dat;
                 dst++;
@@ -146,13 +146,13 @@ quint32 decode_packbits(const char *src, char* dst, quint16 packed_len, quint32 
             n++;
             for (; n > 0; --n)
             {
-                if (! pack_left)
+                if (!pack_left)
                 {
                     dbgFile << "Input buffer exhausted in copy";
                     error_code = 3;
                     break;
                 }
-                if (! unpack_left)
+                if (!unpack_left)
                 {
                     dbgFile << "Output buffer exhausted in copy";
                     error_code = 4;

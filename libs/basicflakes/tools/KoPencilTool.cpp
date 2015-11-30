@@ -110,7 +110,7 @@ void KoPencilTool::repaintDecorations()
 
 void KoPencilTool::mousePressEvent(KoPointerEvent *event)
 {
-    if (! m_shape) {
+    if (!m_shape) {
         m_shape = new KoPathShape();
         m_shape->setShapeId(KoPathShapeId);
         m_shape->setStroke(createStroke());
@@ -146,7 +146,7 @@ void KoPencilTool::mouseMoveEvent(KoPointerEvent *event)
 
 void KoPencilTool::mouseReleaseEvent(KoPointerEvent *event)
 {
-    if (! m_shape)
+    if (!m_shape)
         return;
 
     QPointF point = event->point;
@@ -196,7 +196,7 @@ void KoPencilTool::deactivate()
 
 void KoPencilTool::addPoint(const QPointF & point)
 {
-    if (! m_shape)
+    if (!m_shape)
         return;
 
     // do a moveTo for the first point added
@@ -274,7 +274,7 @@ void KoPencilTool::finish(bool closePath)
     break;
     }
 
-    if (! path)
+    if (!path)
         return;
 
     path->setShapeId(KoPathShapeId);

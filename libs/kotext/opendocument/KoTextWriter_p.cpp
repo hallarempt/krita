@@ -968,7 +968,7 @@ QTextBlock& KoTextWriter::Private::saveList(QTextBlock &block, QHash<QTextList *
 
         QString listXmlId = QString("list-%1").arg(createXmlId());
         listTagInformation.addAttribute("xml:id", listXmlId);
-        if (! listXmlIds.contains(list)) {
+        if (!listXmlIds.contains(list)) {
             listXmlIds.insert(list, listXmlId);
         }
 

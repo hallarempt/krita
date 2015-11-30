@@ -278,7 +278,7 @@ void KoTextTableTemplate::saveOdf(KoXmlWriter *writer, KoTextSharedSavingData *s
         if (d->stylesPrivate.contains(templateStyles[index].m_property)) {
             writer->startElement(QString("table:%1").arg(templateStyles[index].m_element).toLatin1());
             QString savedStyleName = savingData->styleName(d->stylesPrivate.value(templateStyles[index].m_property).toInt());
-            if (! savedStyleName.isEmpty()) {
+            if (!savedStyleName.isEmpty()) {
                 writer->addAttribute("table:style-name", savedStyleName);
             }
 

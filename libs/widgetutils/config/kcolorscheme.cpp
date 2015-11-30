@@ -80,7 +80,7 @@ StateEffects::StateEffects(QPalette::ColorGroup state, const KSharedConfigPtr &c
     _effects[2] = 0;
 
     // NOTE: keep this in sync with kdebase/workspace/kcontrol/colors/colorscm.cpp
-    if (! group.isEmpty()) {
+    if (!group.isEmpty()) {
         KConfigGroup cfg(config, group);
         const bool enabledByDefault = (state == QPalette::Disabled);
         if (cfg.readEntry("Enable", enabledByDefault)) {

@@ -66,7 +66,7 @@ public:
 
 void KisTasksetResourceDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-    if (! index.isValid())
+    if (!index.isValid())
         return;
 
     TasksetResource* taskset = static_cast<TasksetResource*>(index.internalPointer());

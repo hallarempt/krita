@@ -73,7 +73,7 @@ void KoPathConnectionPointStrategy::handleMouseMove(const QPointF &mouseLocation
                 continue;
 
             KoConnectionPoints connectionPoints = shape->connectionPoints();
-            if (! connectionPoints.count()) {
+            if (!connectionPoints.count()) {
                 QSizeF size = shape->size();
                 connectionPoints[-1] = QPointF(0.0, 0.0);
                 connectionPoints[-2] = QPointF(size.width(), 0.0);

@@ -98,7 +98,7 @@ SvgGradientHelper* SvgParser::findGradient(const QString &id, const QString &hre
             return 0;
     } else {
         // ok parse gradient now
-        if (! parseGradient(m_context.definition(id), m_context.definition(href)))
+        if (!parseGradient(m_context.definition(id), m_context.definition(href)))
             return 0;
     }
 
@@ -168,7 +168,7 @@ SvgFilterHelper* SvgParser::findFilter(const QString &id, const QString &href)
             return 0;
     } else {
         // ok parse filter now
-        if (! parseFilter(m_context.definition(id), m_context.definition(href)))
+        if (!parseFilter(m_context.definition(id), m_context.definition(href)))
             return 0;
     }
 
@@ -205,7 +205,7 @@ SvgClipPathHelper* SvgParser::findClipPath(const QString &id, const QString &hre
             return 0;
     } else {
         // ok clip path filter now
-        if (! parseClipPath(m_context.definition(id), m_context.definition(href)))
+        if (!parseClipPath(m_context.definition(id), m_context.definition(href)))
             return 0;
     }
 
@@ -256,7 +256,7 @@ bool SvgParser::parseGradient(const KoXmlElement &e, const KoXmlElement &referen
 
     if (e.hasAttribute("xlink:href")) {
         QString href = e.attribute("xlink:href").mid(1);
-        if (! href.isEmpty()) {
+        if (!href.isEmpty()) {
             // copy the referenced gradient if found
             SvgGradientHelper *pGrad = findGradient(href);
             if (pGrad)
@@ -276,7 +276,7 @@ bool SvgParser::parseGradient(const KoXmlElement &e, const KoXmlElement &referen
 
     QString gradientId = b.attribute("id");
 
-    if (! gradientId.isEmpty()) {
+    if (!gradientId.isEmpty()) {
         // check if we have this gradient already parsed
         // copy existing gradient if it exists
         if (m_gradients.find(gradientId) != m_gradients.end())
@@ -427,7 +427,7 @@ bool SvgParser::parseFilter(const KoXmlElement &e, const KoXmlElement &reference
     // check if we are referencing another filter
     if (e.hasAttribute("xlink:href")) {
         QString href = e.attribute("xlink:href").mid(1);
-        if (! href.isEmpty()) {
+        if (!href.isEmpty()) {
             // copy the referenced filter if found
             SvgFilterHelper *refFilter = findFilter(href);
             if (refFilter)
@@ -476,7 +476,7 @@ bool SvgParser::parseClipPath(const KoXmlElement &e, const KoXmlElement &referen
     // check if we are referencing another clip path
     if (e.hasAttribute("xlink:href")) {
         QString href = e.attribute("xlink:href").mid(1);
-        if (! href.isEmpty()) {
+        if (!href.isEmpty()) {
             // copy the referenced clip path if found
             SvgClipPathHelper *refClipPath = findClipPath(href);
             if (refClipPath)
@@ -518,7 +518,7 @@ void SvgParser::applyStyle(KoShape *obj, const SvgStyles &styles)
     applyFilter(obj);
     applyClipping(obj);
 
-    if (! gc->display)
+    if (!gc->display)
         obj->setVisible(false);
     obj->setTransparency(1.0 - gc->opacity);
 }
@@ -526,7 +526,7 @@ void SvgParser::applyStyle(KoShape *obj, const SvgStyles &styles)
 void SvgParser::applyFillStyle(KoShape *shape)
 {
     SvgGraphicsContext *gc = m_context.currentGC();
-    if (! gc)
+    if (!gc)
         return;
 
     if (gc->fillType == SvgGraphicsContext::None) {
@@ -637,7 +637,7 @@ void SvgParser::applyFillStyle(KoShape *shape)
 void SvgParser::applyStrokeStyle(KoShape *shape)
 {
     SvgGraphicsContext *gc = m_context.currentGC();
-    if (! gc)
+    if (!gc)
         return;
 
     if (gc->strokeType == SvgGraphicsContext::None) {
@@ -691,14 +691,14 @@ void SvgParser::applyStrokeStyle(KoShape *shape)
 void SvgParser::applyFilter(KoShape *shape)
 {
     SvgGraphicsContext *gc = m_context.currentGC();
-    if (! gc)
+    if (!gc)
         return;
 
     if (gc->filterId.isEmpty())
         return;
 
     SvgFilterHelper *filter = findFilter(gc->filterId);
-    if (! filter)
+    if (!filter)
         return;
 
     KoXmlElement content = filter->content();
@@ -819,14 +819,14 @@ void SvgParser::applyFilter(KoShape *shape)
 void SvgParser::applyClipping(KoShape *shape)
 {
     SvgGraphicsContext *gc = m_context.currentGC();
-    if (! gc)
+    if (!gc)
         return;
 
     if (gc->clipPathId.isEmpty())
         return;
 
     SvgClipPathHelper *clipPath = findClipPath(gc->clipPathId);
-    if (! clipPath)
+    if (!clipPath)
         return;
 
     debugFlake << "applying clip path" << gc->clipPathId << "clip rule" << gc->clipRule;
@@ -953,7 +953,7 @@ void SvgParser::addToGroup(QList<KoShape*> shapes, KoShapeGroup *group)
 {
     m_shapes += shapes;
 
-    if (! group)
+    if (!group)
         return;
 
     KoShapeGroupCommand cmd(group, shapes);
@@ -988,7 +988,7 @@ QList<KoShape*> SvgParser::parseSvg(const KoXmlElement &e, QSizeF *fragmentSize)
 
     gc->currentBoundbox = QRectF(QPointF(0, 0), svgFragmentSize);
 
-    if (! isRootSvg) {
+    if (!isRootSvg) {
         QTransform move;
         // x and y attribute has no meaning for outermost svg elements
         const qreal x = parseUnit(e.attribute("x", "0"));

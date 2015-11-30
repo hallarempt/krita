@@ -105,7 +105,7 @@ void KisPDFImportWidget::selectSelectionOfPages(bool v)
 
 void KisPDFImportWidget::updateSelectionOfPages()
 {
-    if (! boolSelectionPage->isChecked()) boolSelectionPage->toggle();
+    if (!boolSelectionPage->isChecked()) boolSelectionPage->toggle();
     m_pages.clear();
     for (int i = 0; i < m_pdfDoc->numPages(); i++) {
         if (listPages->item(i)->isSelected()) m_pages.push_back(i);

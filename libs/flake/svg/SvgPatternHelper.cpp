@@ -127,7 +127,7 @@ QImage SvgPatternHelper::generateImage(const QRectF &objectBound, const QList<Ko
 
     QTransform viewMatrix;
 
-    if (! m_patternContentViewbox.isNull()) {
+    if (!m_patternContentViewbox.isNull()) {
         viewMatrix.translate(-m_patternContentViewbox.x(), -m_patternContentViewbox.y());
         const qreal xScale = patternSize.width() / m_patternContentViewbox.width();
         const qreal yScale = patternSize.height() / m_patternContentViewbox.height();

@@ -301,7 +301,7 @@ void KoCreatePathTool::mouseReleaseEvent(KoPointerEvent *event)
 {
     Q_D(KoCreatePathTool);
 
-    if (! d->shape || (event->buttons() & Qt::RightButton)) return;
+    if (!d->shape || (event->buttons() & Qt::RightButton)) return;
 
     d->listeningToModifiers = true; // After the first press-and-release
     d->repaintActivePoint();

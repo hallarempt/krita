@@ -119,7 +119,7 @@ bool KoGradientBackground::loadStyle(KoOdfLoadingContext &context, const QSizeF 
 {
     Q_D(KoGradientBackground);
     KoStyleStack &styleStack = context.styleStack();
-    if (! styleStack.hasProperty(KoXmlNS::draw, "fill"))
+    if (!styleStack.hasProperty(KoXmlNS::draw, "fill"))
         return false;
 
     QString fillStyle = styleStack.property(KoXmlNS::draw, "fill");
@@ -134,7 +134,7 @@ bool KoGradientBackground::loadStyle(KoOdfLoadingContext &context, const QSizeF 
             // Brush will have transparency if the svg:linearGradient stop point has stop-opacity property otherwise it is opaque
             if (brush.isOpaque() && styleStack.hasProperty(KoXmlNS::draw, "opacity")) {
                 QString opacityPercent = styleStack.property(KoXmlNS::draw, "opacity");
-                if (! opacityPercent.isEmpty() && opacityPercent.right(1) == "%") {
+                if (!opacityPercent.isEmpty() && opacityPercent.right(1) == "%") {
                     float opacity = qMin(opacityPercent.left(opacityPercent.length() - 1).toDouble(), 100.0) / 100;
                     QGradientStops stops;
                     Q_FOREACH (QGradientStop stop, d->gradient->stops()) {

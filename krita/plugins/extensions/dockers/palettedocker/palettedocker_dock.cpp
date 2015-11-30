@@ -72,7 +72,7 @@ void PaletteDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
 {
     painter->save();
 
-    if (! index.isValid())
+    if (!index.isValid())
         return;
 
     if (option.state & QStyle::State_Selected) {

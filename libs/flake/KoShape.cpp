@@ -371,7 +371,7 @@ bool KoShape::hitTest(const QPointF &position) const
         return true;
 
     // if there is no shadow we can as well just leave
-    if (! d->shadow)
+    if (!d->shadow)
         return false;
 
     // the shadow has an offset to the shape, so we simply
@@ -713,7 +713,7 @@ KoShapeApplicationData *KoShape::applicationData() const
 bool KoShape::hasTransparency() const
 {
     Q_D(const KoShape);
-    if (! d->fill)
+    if (!d->fill)
         return true;
     else
         return d->fill->hasTransparency() || d->transparency > 0.0;
@@ -1044,14 +1044,14 @@ void KoShape::setVisible(bool on)
 bool KoShape::isVisible(bool recursive) const
 {
     Q_D(const KoShape);
-    if (! recursive)
+    if (!recursive)
         return d->visible;
     if (recursive && ! d->visible)
         return false;
 
     KoShapeContainer * parentShape = parent();
     while (parentShape) {
-        if (! parentShape->isVisible())
+        if (!parentShape->isVisible())
             return false;
         parentShape = parentShape->parent();
     }
@@ -1312,7 +1312,7 @@ QString KoShape::saveStyle(KoGenStyle &style, KoShapeSavingContext &context) con
         value = "position size";
     }
     if (isContentProtected()) {
-        if (! value.isEmpty())
+        if (!value.isEmpty())
             value += ' ';
         value += "content";
     }
@@ -1559,7 +1559,7 @@ bool KoShape::loadOdfAttributes(const KoXmlElement &element, KoShapeLoadingConte
 
     if (attributes & OdfTransformation) {
         QString transform = element.attributeNS(KoXmlNS::draw, "transform", QString());
-        if (! transform.isEmpty())
+        if (!transform.isEmpty())
             applyAbsoluteTransformation(parseOdfTransform(transform));
     }
 
@@ -1689,7 +1689,7 @@ KoShapeShadow *KoShapePrivate::loadOdfShadow(KoShapeLoadingContext &context) con
         shadow->setBlur(blur);
 
         QString opacity = styleStack.property(KoXmlNS::draw, "shadow-opacity");
-        if (! opacity.isEmpty() && opacity.right(1) == "%")
+        if (!opacity.isEmpty() && opacity.right(1) == "%")
             shadowColor.setAlphaF(opacity.left(opacity.length() - 1).toFloat() / 100.0);
         shadow->setColor(shadowColor);
         shadow->setVisible(shadowStyle == "visible");
@@ -1944,7 +1944,7 @@ void KoShape::saveOdfAttributes(KoShapeSavingContext &context, int attributes) c
     }
 
     if (attributes & OdfName) {
-        if (! name().isEmpty())
+        if (!name().isEmpty())
             context.xmlWriter().addAttribute("draw:name", name());
     }
 
@@ -1989,7 +1989,7 @@ void KoShape::saveOdfAttributes(KoShapeSavingContext &context, int attributes) c
 
     if (attributes & OdfTransformation) {
         QTransform matrix = absoluteTransformation(0) * context.shapeOffset(this);
-        if (! matrix.isIdentity()) {
+        if (!matrix.isIdentity()) {
             if (qAbs(matrix.m11() - 1) < 1E-5           // 1
                     && qAbs(matrix.m12()) < 1E-5        // 0
                     && qAbs(matrix.m21()) < 1E-5        // 0
@@ -2160,14 +2160,14 @@ QRectF KoShape::documentToShape(const QRectF &rect) const
 bool KoShape::addDependee(KoShape *shape)
 {
     Q_D(KoShape);
-    if (! shape)
+    if (!shape)
         return false;
 
     // refuse to establish a circular dependency
     if (shape->hasDependee(this))
         return false;
 
-    if (! d->dependees.contains(shape))
+    if (!d->dependees.contains(shape))
         d->dependees.append(shape);
 
     return true;

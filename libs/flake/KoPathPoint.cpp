@@ -163,7 +163,7 @@ void KoPathPoint::setProperties(PointProperties properties)
     if ((d->properties & StartSubpath) == 0 && (d->properties & StopSubpath) == 0)
         d->properties &= ~CloseSubpath;
 
-    if (! activeControlPoint1() || ! activeControlPoint2()) {
+    if (!activeControlPoint1() || ! activeControlPoint2()) {
         // strip smooth and symmetric flags if point has not two control points
         d->properties &= ~IsSmooth;
         d->properties &= ~IsSymmetric;
@@ -192,7 +192,7 @@ void KoPathPoint::setProperty(PointProperty property)
 
     d->properties |= property;
 
-    if (! activeControlPoint1() || ! activeControlPoint2()) {
+    if (!activeControlPoint1() || ! activeControlPoint2()) {
         // strip smooth and symmetric flags if point has not two control points
         d->properties &= ~IsSymmetric;
         d->properties &= ~IsSmooth;
@@ -345,7 +345,7 @@ bool KoPathPoint::isSmooth(KoPathPoint * prev, KoPathPoint * next) const
         t1 = point() - controlPoint1();
     } else {
         // we need the previous path point but there is none provided
-        if (! prev)
+        if (!prev)
             return false;
         if (prev->activeControlPoint2())
             t1 = point() - prev->controlPoint2();
@@ -357,7 +357,7 @@ bool KoPathPoint::isSmooth(KoPathPoint * prev, KoPathPoint * next) const
         t2 = controlPoint2() - point();
     } else {
         // we need the next path point but there is none provided
-        if (! next)
+        if (!next)
             return false;
         if (next->activeControlPoint1())
             t2 = next->controlPoint1() - point();

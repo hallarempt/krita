@@ -151,7 +151,7 @@ void KoShapeManager::addShape(KoShape *shape, Repaint repaint)
         return;
     shape->priv()->addShapeManager(this);
     d->shapes.append(shape);
-    if (! dynamic_cast<KoShapeGroup*>(shape) && ! dynamic_cast<KoShapeLayer*>(shape)) {
+    if (!dynamic_cast<KoShapeGroup*>(shape) && ! dynamic_cast<KoShapeLayer*>(shape)) {
         QRectF br(shape->boundingRect());
         d->tree.insert(br, shape);
     }
@@ -288,7 +288,7 @@ void KoShapeManager::paint(QPainter &painter, const KoViewConverter &converter, 
     painter.restore();
 #endif
 
-    if (! forPrint) {
+    if (!forPrint) {
         KoShapePaintingContext paintContext(d->canvas, forPrint); //FIXME
         d->selection->paint(painter, converter, paintContext);
     }
@@ -437,7 +437,7 @@ KoShape *KoShapeManager::shapeAt(const QPointF &position, KoFlake::ShapeSelectio
         KoShape *shape = sortedShapes.at(count);
         if (omitHiddenShapes && ! shape->isVisible(true))
             continue;
-        if (! shape->hitTest(position))
+        if (!shape->hitTest(position))
             continue;
 
         switch (selection) {
@@ -449,7 +449,7 @@ KoShape *KoShapeManager::shapeAt(const QPointF &position, KoFlake::ShapeSelectio
                 return shape;
             break;
         case KoFlake::Unselected:
-            if (! d->selection->isSelected(shape))
+            if (!d->selection->isSelected(shape))
                 return shape;
             break;
         case KoFlake::NextUnselected:
@@ -457,7 +457,7 @@ KoShape *KoShapeManager::shapeAt(const QPointF &position, KoFlake::ShapeSelectio
             if (d->selection->isSelected(shape))
                 continue;
             // memorize the first unselected shape
-            if (! firstUnselectedShape)
+            if (!firstUnselectedShape)
                 firstUnselectedShape = shape;
             // check if the shape above is selected
             if (count + 1 < sortedShapes.count() && d->selection->isSelected(sortedShapes.at(count + 1)))
@@ -489,7 +489,7 @@ QList<KoShape *> KoShapeManager::shapesAt(const QRectF &rect, bool omitHiddenSha
             intersectedShapes.removeAt(count);
         } else {
             const QPainterPath outline = shape->absoluteTransformation(0).map(shape->outline());
-            if (! outline.intersects(rect) && ! outline.contains(rect)) { 
+            if (!outline.intersects(rect) && ! outline.contains(rect)) { 
                 intersectedShapes.removeAt(count);
             }
         }
@@ -554,7 +554,7 @@ void KoShapeManager::suggestChangeTool(KoPointerEvent *event)
 
     KoShape *clicked = shapeAt(event->point);
     if (clicked) {
-        if (! selection()->isSelected(clicked)) {
+        if (!selection()->isSelected(clicked)) {
             selection()->deselectAll();
             selection()->select(clicked);
         }

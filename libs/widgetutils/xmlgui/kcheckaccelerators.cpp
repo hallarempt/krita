@@ -269,7 +269,7 @@ void KCheckAccelerators::checkAccelerators(bool automatic)
 
     QString s;
 
-    if (! c.isEmpty())  {
+    if (!c.isEmpty())  {
         s += i18n("<h2>Accelerators changed</h2>");
         s += QStringLiteral("<table border><tr><th><b>");
         s += i18n("Old Text");
@@ -280,7 +280,7 @@ void KCheckAccelerators::checkAccelerators(bool automatic)
         s += QStringLiteral("</table>");
     }
 
-    if (! r.isEmpty())  {
+    if (!r.isEmpty())  {
         s += i18n("<h2>Accelerators removed</h2>");
         s += QStringLiteral("<table border><tr><th><b>");
         s += i18n("Old Text");
@@ -289,7 +289,7 @@ void KCheckAccelerators::checkAccelerators(bool automatic)
         s += QStringLiteral("</table>");
     }
 
-    if (! a.isEmpty())  {
+    if (!a.isEmpty())  {
         s += i18n("<h2>Accelerators added (just for your info)</h2>");
         s += QStringLiteral("<table border><tr><th><b>");
         s += i18n("New Text");

@@ -105,7 +105,7 @@ KoPageLayout KoPageLayoutWidget::pageLayout() const
 void KoPageLayoutWidget::sizeChanged(int row)
 {
     if (row < 0) return;
-    if (! d->allowSignals) return;
+    if (!d->allowSignals) return;
     d->allowSignals = false;
     d->pageLayout.format = static_cast<KoPageFormat::Format> (row);
     bool custom =  d->pageLayout.format == KoPageFormat::CustomSize;
@@ -150,7 +150,7 @@ void KoPageLayoutWidget::setUnit(const KoUnit &unit)
 
 void KoPageLayoutWidget::setPageLayout(const KoPageLayout &layout)
 {
-    if (! d->allowSignals) return;
+    if (!d->allowSignals) return;
     d->allowSignals = false;
     d->pageLayout = layout;
 
@@ -180,7 +180,7 @@ void KoPageLayoutWidget::setPageLayout(const KoPageLayout &layout)
 
 void KoPageLayoutWidget::facingPagesChanged()
 {
-    if (! d->allowSignals) return;
+    if (!d->allowSignals) return;
     d->allowSignals = false;
     if (d->widget.singleSided->isChecked()) {
         d->widget.leftLabel->setText(i18n("Left Edge:"));
@@ -197,7 +197,7 @@ void KoPageLayoutWidget::facingPagesChanged()
 
 void KoPageLayoutWidget::marginsChanged()
 {
-    if (! d->allowSignals) return;
+    if (!d->allowSignals) return;
     d->allowSignals = false;
     d->pageLayout.leftMargin = -1;
     d->pageLayout.rightMargin = -1;
@@ -237,7 +237,7 @@ void KoPageLayoutWidget::setTextAreaAvailable(bool available)
 
 void KoPageLayoutWidget::optionsChanged()
 {
-    if (! d->allowSignals) return;
+    if (!d->allowSignals) return;
     if (d->widget.sizes->currentIndex() == KoPageFormat::CustomSize) {
         d->pageLayout.width = d->widget.width->value();
         d->pageLayout.height = d->widget.height->value();
@@ -249,7 +249,7 @@ void KoPageLayoutWidget::optionsChanged()
 
 void KoPageLayoutWidget::orientationChanged()
 {
-    if (! d->allowSignals) return;
+    if (!d->allowSignals) return;
     d->allowSignals = false;
     d->pageLayout.orientation = d->widget.landscape->isChecked() ? KoPageFormat::Landscape : KoPageFormat::Portrait;
 

@@ -117,7 +117,7 @@ QGradient * SvgGradientHelper::adjustedGradient(const QRectF &bound) const
 
 QGradient * SvgGradientHelper::duplicateGradient(const QGradient * originalGradient, const QTransform &transform)
 {
-    if (! originalGradient)
+    if (!originalGradient)
         return 0;
 
     QGradient * duplicatedGradient = 0;
@@ -161,7 +161,7 @@ QGradient * SvgGradientHelper::duplicateGradient(const QGradient * originalGradi
 
 QGradient *SvgGradientHelper::convertGradient(const QGradient *originalGradient, const QSizeF &size)
 {
-    if (! originalGradient)
+    if (!originalGradient)
         return 0;
 
     if (originalGradient->coordinateMode() != QGradient::LogicalMode) {

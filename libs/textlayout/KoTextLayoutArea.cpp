@@ -969,7 +969,7 @@ bool KoTextLayoutArea::layoutBlock(FrameIterator *cursor)
             } else {
                 set = (startMargin != 0);
             }
-            if (! set) {
+            if (!set) {
                 startMargin = listFormat.doubleProperty(KoListStyle::Margin);
             }
 
@@ -1435,7 +1435,7 @@ qreal KoTextLayoutArea::textIndent(const QTextBlock &block, QTextList *textList,
         } else {
             set = (blockTextIndent != 0);
         }
-        if (! set) {
+        if (!set) {
             return textList->format().doubleProperty(KoListStyle::TextIndent);
         }
     }

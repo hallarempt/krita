@@ -54,7 +54,7 @@ void KoPathPointMoveStrategy::handleMouseMove(const QPointF &mouseLocation, Qt::
     }
 
     KoPathToolSelection * selection = dynamic_cast<KoPathToolSelection*>(m_tool->selection());
-    if (! selection)
+    if (!selection)
         return;
 
     KoPathPointMoveCommand cmd(selection->selectedPointsData(), move - m_move);
@@ -72,7 +72,7 @@ KUndo2Command* KoPathPointMoveStrategy::createCommand()
     m_tool->canvas()->updateCanvas(m_tool->canvas()->snapGuide()->boundingRect());
 
     KoPathToolSelection * selection = dynamic_cast<KoPathToolSelection*>(m_tool->selection());
-    if (! selection)
+    if (!selection)
         return 0;
 
     KUndo2Command *cmd = 0;

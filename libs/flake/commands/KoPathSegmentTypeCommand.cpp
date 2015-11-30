@@ -109,7 +109,7 @@ void KoPathSegmentTypeCommand::initialize(const QList<KoPathPointData> & pointDa
                     continue;
             } else {
                 // do not change segment if already a line
-                if (! segment.first()->activeControlPoint2() && ! segment.second()->activeControlPoint1())
+                if (!segment.first()->activeControlPoint2() && ! segment.second()->activeControlPoint1())
                     continue;
             }
 

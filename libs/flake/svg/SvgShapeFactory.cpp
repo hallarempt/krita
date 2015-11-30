@@ -109,7 +109,7 @@ KoShape *SvgShapeFactory::createShapeFromOdf(const KoXmlElement &element, KoShap
 
         context.odfLoadingContext().store()->close();
 
-        if (! parsed) {
+        if (!parsed) {
             errorFlake << "Error while parsing file: "
             << "at line " << line << " column: " << col
             << " message: " << errormessage << endl;

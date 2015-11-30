@@ -91,7 +91,7 @@ KisSpacingInformation KisFilterOp::paintAt(const KisPaintInformation& info)
     KisBrushSP brush = m_brush;
     if (!brush) return KisSpacingInformation(1.0);
 
-    if (! brush->canPaintFor(info))
+    if (!brush->canPaintFor(info))
         return KisSpacingInformation(1.0);
 
     qreal scale = m_sizeOption.apply(info);

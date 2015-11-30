@@ -301,7 +301,7 @@ void KoTextDocumentLayout::documentChanged(int position, int charsRemoved, int c
     const int to = from + charsAdded;
     while (from < to) { // find blocks that have been added
         QTextBlock block = document()->findBlock(from);
-        if (! block.isValid())
+        if (!block.isValid())
             break;
         if (from == block.position() && block.textList()) {
             KoTextBlockData data(block);

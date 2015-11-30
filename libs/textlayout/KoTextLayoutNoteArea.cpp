@@ -91,7 +91,7 @@ bool KoTextLayoutNoteArea::layout(FrameIterator *cursor)
 
     QString label;
     if (d->isContinuedArea) {
-        if (! notesConfig->footnoteContinuationBackward().isEmpty()) {
+        if (!notesConfig->footnoteContinuationBackward().isEmpty()) {
             label = notesConfig->footnoteContinuationBackward() + " " + d->note->label();
         }
         setReferenceRect(left(), right(), top() + OVERLAPPREVENTION

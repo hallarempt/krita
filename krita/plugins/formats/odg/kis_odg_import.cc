@@ -110,7 +110,7 @@ KisImportExportFilter::ConversionStatus KisODGImport::convert(const QByteArray& 
         master = odfStore.styles().masterPages().value("Standard");
     else if (odfStore.styles().masterPages().contains("Default"))
         master = odfStore.styles().masterPages().value("Default");
-    else if (! odfStore.styles().masterPages().empty())
+    else if (!odfStore.styles().masterPages().empty())
         master = odfStore.styles().masterPages().begin().value();
 
     qint32 width = 1000;

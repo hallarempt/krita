@@ -88,7 +88,7 @@ bool KoStopGradient::loadFromDevice(QIODevice *dev)
 bool KoStopGradient::save()
 {
     QFile fileOut(filename());
-    if (! fileOut.open(QIODevice::WriteOnly))
+    if (!fileOut.open(QIODevice::WriteOnly))
         return false;
 
     bool retval = saveToDevice(&fileOut);
@@ -132,7 +132,7 @@ QGradient* KoStopGradient::toQGradient() const
 
 void KoStopGradient::colorAt(KoColor& dst, qreal t) const
 {
-    if (! m_stops.count())
+    if (!m_stops.count())
         return;
     if (t <= m_stops.first().first || m_stops.count() == 1) {
         // we have only one stop or t is before the first stop
@@ -184,7 +184,7 @@ void KoStopGradient::colorAt(KoColor& dst, qreal t) const
 
 KoStopGradient * KoStopGradient::fromQGradient(QGradient * gradient)
 {
-    if (! gradient)
+    if (!gradient)
         return 0;
 
     KoStopGradient * newGradient = new KoStopGradient("");

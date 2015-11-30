@@ -276,7 +276,7 @@ void KisMaskManager::maskProperties()
         KisFilterMask *mask = static_cast<KisFilterMask*>(activeMask().data());
 
         KisLayerSP layer = dynamic_cast<KisLayer*>(mask->parent().data());
-        if (! layer)
+        if (!layer)
             return;
 
 

@@ -569,9 +569,9 @@ void KoConnectionShape::updatePath(const QSizeF &size)
         QPointF direction1 = d->escapeDirection(0);
         QPointF direction2 = d->escapeDirection(d->handles.count() - 1);
         moveTo(d->handles[StartHandle]);
-        if (! direction1.isNull())
+        if (!direction1.isNull())
             lineTo(d->handles[StartHandle] + MinimumEscapeLength * direction1);
-        if (! direction2.isNull())
+        if (!direction2.isNull())
             lineTo(d->handles[EndHandle] + MinimumEscapeLength * direction2);
         lineTo(d->handles[EndHandle]);
         break;
@@ -585,7 +585,7 @@ void KoConnectionShape::updatePath(const QSizeF &size)
         QPointF direction1 = d->escapeDirection(0);
         QPointF direction2 = d->escapeDirection(d->handles.count() - 1);
         moveTo(d->handles[StartHandle]);
-        if (! direction1.isNull() && ! direction2.isNull()) {
+        if (!direction1.isNull() && ! direction2.isNull()) {
             QPointF curvePoint1 = d->handles[StartHandle] + 5.0 * MinimumEscapeLength * direction1;
             QPointF curvePoint2 = d->handles[EndHandle] + 5.0 * MinimumEscapeLength * direction2;
             curveTo(curvePoint1, curvePoint2, d->handles[EndHandle]);

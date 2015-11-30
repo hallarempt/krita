@@ -385,12 +385,12 @@ void KoGradientEditWidget::addGradientToPredefs()
     gradient->setStops(m_stops);
     KoStopGradient * g = KoStopGradient::fromQGradient(gradient);
     delete gradient;
-    if (! g)
+    if (!g)
         return;
     g->setFilename(fileInfo.filePath());
     g->setValid(true);
 
-    if (! server->addResource(g))
+    if (!server->addResource(g))
         delete g;
 }
 

@@ -78,7 +78,7 @@ void KisPresetDelegate::paint(QPainter * painter, const QStyleOptionViewItem & o
     painter->save();
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-    if (! index.isValid())
+    if (!index.isValid())
         return;
 
     KisPaintOpPreset* preset = static_cast<KisPaintOpPreset*>(index.internalPointer());

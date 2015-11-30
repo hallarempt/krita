@@ -173,7 +173,7 @@ QTransform ArtisticTextTool::cursorTransform() const
 
 void ArtisticTextTool::paint(QPainter &painter, const KoViewConverter &converter)
 {
-    if (! m_currentShape) {
+    if (!m_currentShape) {
         return;
     }
 
@@ -593,7 +593,7 @@ void ArtisticTextTool::detachPath()
 
 void ArtisticTextTool::convertText()
 {
-    if (! m_currentShape) {
+    if (!m_currentShape) {
         return;
     }
 
@@ -687,7 +687,7 @@ int ArtisticTextTool::textCursor() const
 
 void ArtisticTextTool::updateTextCursorArea() const
 {
-    if (! m_currentShape || m_textCursor < 0) {
+    if (!m_currentShape || m_textCursor < 0) {
         return;
     }
 

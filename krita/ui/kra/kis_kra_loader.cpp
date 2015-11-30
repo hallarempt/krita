@@ -650,7 +650,7 @@ KisNodeSP KisKraLoader::loadNode(const KoXmlElement& element, KisImageWSP image,
     node->setY(y);
     node->setName(name);
 
-    if (! id.isNull())          // if no uuid in file, new one has been generated already
+    if (!id.isNull())          // if no uuid in file, new one has been generated already
         node->setUuid(id);
 
     if (node->inherits("KisLayer")) {
@@ -910,7 +910,7 @@ KisNodeSP KisKraLoader::loadCloneLayer(const KoXmlElement& element, KisImageWSP 
     KisCloneLayerSP layer = new KisCloneLayer(0, image, name, opacity);
 
     KisCloneInfo info;
-    if (! (element.attribute(CLONE_FROM_UUID)).isNull()) {
+    if (!(element.attribute(CLONE_FROM_UUID)).isNull()) {
         info = KisCloneInfo(QUuid(element.attribute(CLONE_FROM_UUID)));
     } else {
         if ((element.attribute(CLONE_FROM)).isNull()) {

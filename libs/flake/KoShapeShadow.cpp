@@ -229,7 +229,7 @@ void KoShapeShadow::fillStyle(KoGenStyle &style, KoShapeSavingContext &context)
 
 void KoShapeShadow::paint(KoShape *shape, QPainter &painter, const KoViewConverter &converter)
 {
-    if (! d->visible)
+    if (!d->visible)
         return;
 
     // So the approach we are taking here is to draw into a buffer image the size of boundingRect

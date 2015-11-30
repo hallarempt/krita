@@ -309,7 +309,7 @@ const TypeInfo* Schema::Private::parseChoice(QDomElement& elt)
             EntryInfo info;
             QString name;
             if (parseEltType(e, info, name, true, true)) {
-                if (! choiceType) choiceType = info.propertyType;
+                if (!choiceType) choiceType = info.propertyType;
                 if (choiceType == info.propertyType) {
                     QString text = e.text();
                     QVariant var = text;

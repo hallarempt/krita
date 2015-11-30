@@ -93,7 +93,7 @@ KUndo2Command *KoPathPointRemoveCommand::createCommand(
             }
             subpathsOfPath.clear();
         }
-        if (! it->pathShape)
+        if (!it->pathShape)
             continue;
         // keep reference to last point
         last = *it;

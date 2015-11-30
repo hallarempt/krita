@@ -28,7 +28,7 @@
 
 QGradient *KoFlake::cloneGradient(const QGradient *gradient)
 {
-    if (! gradient)
+    if (!gradient)
         return 0;
 
     QGradient *clone = 0;

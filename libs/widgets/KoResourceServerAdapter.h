@@ -134,7 +134,7 @@ public:
 
     virtual QList<KoResource*> resources()
     {
-        if (! m_resourceServer)
+        if (!m_resourceServer)
             return QList<KoResource*>();
 
         bool cacheDirty = serverResourceCacheInvalid();
@@ -157,7 +157,7 @@ public:
 
     bool addResource(KoResource* resource)
     {
-        if (! m_resourceServer)
+        if (!m_resourceServer)
             return false;
 
         T* res = dynamic_cast<T*>(resource);
@@ -170,7 +170,7 @@ public:
 
     bool removeResource(KoResource* resource)
     {
-        if (! m_resourceServer)
+        if (!m_resourceServer)
             return false;
 
         T* res = dynamic_cast<T*>(resource);
@@ -185,7 +185,7 @@ public:
 
     void importResourceFile(const QString & filename , bool fileCreation = true)
     {
-        if (! m_resourceServer)
+        if (!m_resourceServer)
             return;
         m_resourceServer->importResourceFile(filename, fileCreation);
     }
@@ -229,7 +229,7 @@ public:
     }
 
     QString extensions() const {
-        if (! m_resourceServer)
+        if (!m_resourceServer)
             return QString();
 
         return m_resourceServer->extensions();

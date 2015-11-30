@@ -87,7 +87,7 @@ bool KoColorBackground::loadStyle(KoOdfLoadingContext & context, const QSizeF &)
 {
     Q_D(KoColorBackground);
     KoStyleStack &styleStack = context.styleStack();
-    if (! styleStack.hasProperty(KoXmlNS::draw, "fill"))
+    if (!styleStack.hasProperty(KoXmlNS::draw, "fill"))
         return false;
 
     QString fillStyle = styleStack.property(KoXmlNS::draw, "fill");

@@ -286,7 +286,7 @@ void KoOdfWorkaround::fixBadDateForTextTime(QString &value)
 
 void KoOdfWorkaround::fixClipRectOffsetValuesString(QString &offsetValuesString)
 {
-    if (! offsetValuesString.contains(QLatin1Char(','))) {
+    if (!offsetValuesString.contains(QLatin1Char(','))) {
         // assumes no spaces existing between values and units
         offsetValuesString = offsetValuesString.simplified().replace(QLatin1Char(' '), QLatin1Char(','));
     }

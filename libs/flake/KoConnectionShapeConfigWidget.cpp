@@ -46,7 +46,7 @@ void KoConnectionShapeConfigWidget::setConnectionType(int type)
 void KoConnectionShapeConfigWidget::open(KoShape *shape)
 {
     m_connection = dynamic_cast<KoConnectionShape*>(shape);
-    if (! m_connection)
+    if (!m_connection)
         return;
 
     widget.connectionType->blockSignals(true);

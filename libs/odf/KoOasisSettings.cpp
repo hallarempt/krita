@@ -188,7 +188,7 @@ bool KoOasisSettings::Items::parseConfigItemBool(const QString& configName, bool
 {
     bool ok;
     const QString str = findConfigItem(configName, &ok);
-    if (! ok)
+    if (!ok)
         return defValue;
     if (str == "true")
         return true;

@@ -355,7 +355,7 @@ void ListItemsHelper::recalculateBlock(QTextBlock &block)
             if (isOutline != bool(b.blockFormat().intProperty(KoParagraphStyle::OutlineLevel)))
                 continue; // also uninteresting cause the one is an outline-listitem while the other is not
 
-            if (! KoListStyle::isNumberingStyle(static_cast<KoListStyle::Style>(lf.style()))) {
+            if (!KoListStyle::isNumberingStyle(static_cast<KoListStyle::Style>(lf.style()))) {
                 continue;
             }
 

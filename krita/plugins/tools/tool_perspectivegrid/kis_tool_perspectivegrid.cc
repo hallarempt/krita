@@ -61,7 +61,7 @@ void KisToolPerspectiveGrid::activate(ToolActivation toolActivation, const QSet<
     KisTool::activate(toolActivation, shapes);
 
     m_canvas->viewManager()->perspectiveGridManager()->startEdition();
-    if (! m_canvas->viewManager()->resourceProvider()->currentImage()->perspectiveGrid()->hasSubGrids()) {
+    if (!m_canvas->viewManager()->resourceProvider()->currentImage()->perspectiveGrid()->hasSubGrids()) {
         m_internalMode = MODE_CREATION;
         m_points.clear();
     } else {

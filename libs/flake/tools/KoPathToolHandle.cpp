@@ -117,7 +117,7 @@ KoInteractionStrategy * PointHandle::handleMousePress(KoPointerEvent *event)
         }
     } else {
         KoPathPoint::PointProperties props = m_activePoint->properties();
-        if (! m_activePoint->activeControlPoint1() || ! m_activePoint->activeControlPoint2())
+        if (!m_activePoint->activeControlPoint1() || ! m_activePoint->activeControlPoint2())
             return 0;
 
         KoPathPointTypeCommand::PointType pointType = KoPathPointTypeCommand::Smooth;
@@ -202,7 +202,7 @@ KoInteractionStrategy * ConnectionHandle::handleMousePress(KoPointerEvent *event
         if (selection)
             selection->clear();
         KoConnectionShape * shape = dynamic_cast<KoConnectionShape*>(m_parameterShape);
-        if (! shape)
+        if (!shape)
             return 0;
         return new KoPathConnectionPointStrategy(m_tool, shape, m_handleId);
     }

@@ -35,7 +35,7 @@ void KoPathPointRubberSelectStrategy::finishInteraction(Qt::KeyboardModifiers mo
 {
     Q_D(KoShapeRubberSelectStrategy);
     KoPathToolSelection * selection = dynamic_cast<KoPathToolSelection*>(m_tool->selection());
-    if (! selection)
+    if (!selection)
         return;
 
     selection->selectPoints(d->selectedRect(), !(modifiers & Qt::ControlModifier));

@@ -345,7 +345,7 @@ QOpenGLShaderProgram *KisOpenGLCanvas2::getCursorShader()
         d->cursorShader->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/cursor.vert");
         d->cursorShader->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/cursor.frag");
         d->cursorShader->bindAttributeLocation("a_vertexPosition", PROGRAM_VERTEX_ATTRIBUTE);
-        if (! d->cursorShader->link()) {
+        if (!d->cursorShader->link()) {
             dbgUI << "OpenGL error" << glGetError();
             qFatal("Failed linking cursor shader");
         }

@@ -119,7 +119,7 @@ void KoGridData::setPaintGridInBackground(bool inBackground)
 
 void KoGridData::paintGrid(QPainter &painter, const KoViewConverter &converter, const QRectF &area) const
 {
-    if (! showGrid())
+    if (!showGrid())
         return;
 
     painter.setPen(gridColor());

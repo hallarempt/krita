@@ -58,7 +58,7 @@ public:
 void ColorSetDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     painter->save();
-    if (! index.isValid())
+    if (!index.isValid())
         return;
 
     KoResource* resource = static_cast<KoResource*>(index.internalPointer());

@@ -181,7 +181,7 @@ void KoShapeGroupCommand::undo()
             bool boundingRectInitialized = false;
             QRectF bound;
             Q_FOREACH (KoShape * shape, d->container->shapes()) {
-                if (! boundingRectInitialized) {
+                if (!boundingRectInitialized) {
                     bound = shape->boundingRect();
                     boundingRectInitialized = true;
                 } else

@@ -77,7 +77,7 @@ KoColumns::SeparatorVerticalAlignment KoColumns::parseSeparatorVerticalAlignment
     // default to AlignTop
     SeparatorVerticalAlignment result = defaultSeparatorVerticalAlignment;
 
-    if (! value.isEmpty()) {
+    if (!value.isEmpty()) {
         // skip "top", is default
         if (value == QLatin1String("middle")) {
             result = AlignVCenter;
@@ -93,7 +93,7 @@ QColor KoColumns::parseSeparatorColor(const QString &value)
 {
     QColor result(value);
 
-    if (! result.isValid())
+    if (!result.isValid())
         // default is black, cmp. ODF 1.2 §19.467
         result = QColor(defaultSeparatorColor);
 
@@ -111,7 +111,7 @@ int KoColumns::parseSeparatorHeight(const QString &value)
         // try to convert
         result = value.left(value.length()-1).toInt(&ok);
         // reset to 100% if conversion failed (which sets result to 0)
-        if (! ok) {
+        if (!ok) {
             result = defaultSeparatorHeight;
         }
     }
@@ -122,7 +122,7 @@ int KoColumns::parseSeparatorHeight(const QString &value)
 KoColumns::SeparatorStyle KoColumns::parseSeparatorStyle(const QString &value)
 {
     SeparatorStyle result = None;
-    if (! value.isEmpty()) {
+    if (!value.isEmpty()) {
         //  skip "none", is default
         if (value == QLatin1String("solid")) {
             result = Solid;
@@ -147,7 +147,7 @@ int KoColumns::parseRelativeWidth(const QString &value)
         bool ok = false;
         // try to convert
         result = value.left(value.length()-1).toInt(&ok);
-        if (! ok) {
+        if (!ok) {
             result = 0;
         }
     }
@@ -201,7 +201,7 @@ void KoColumns::loadOdf(const KoXmlElement &style)
         gapWidth = KoUnit::parseValue(columnsElement.attributeNS(KoXmlNS::fo, "column-gap"));
 
         KoXmlElement columnSep = KoXml::namedItemNS(columnsElement, KoXmlNS::style, "column-sep");
-        if (! columnSep.isNull()) {
+        if (!columnSep.isNull()) {
             separatorStyle = parseSeparatorStyle(columnSep.attributeNS(KoXmlNS::style, "style"));
             separatorWidth = KoUnit::parseValue(columnSep.attributeNS(KoXmlNS::style, "width"));
             separatorHeight = parseSeparatorHeight(columnSep.attributeNS(KoXmlNS::style, "height"));
@@ -231,7 +231,7 @@ void KoColumns::loadOdf(const KoXmlElement &style)
             columnData.append(datum);
         }
 
-        if (! columnData.isEmpty() && count != columnData.count()) {
+        if (!columnData.isEmpty() && count != columnData.count()) {
             warnOdf << "Found not as many <style:column> elements as attribut fo:column-count has set:"<< count;
             columnData.clear();
         }

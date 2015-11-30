@@ -125,7 +125,7 @@ QList<qreal> KoGuidesData::verticalGuideLines() const
 
 void KoGuidesData::paintGuides(QPainter &painter, const KoViewConverter &converter, const QRectF &area) const
 {
-    if (! showGuideLines())
+    if (!showGuideLines())
         return;
 
     painter.setPen(d->guidesColor);

@@ -67,7 +67,7 @@ public:
 
 void KisBrushDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-    if (! index.isValid())
+    if (!index.isValid())
         return;
 
     KisBrush *brush = static_cast<KisBrush*>(index.internalPointer());

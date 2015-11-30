@@ -396,7 +396,7 @@ void KoTextLayoutArea::drawListItem(QPainter *painter, QTextBlock &block)
     QTextList *list = block.textList();
     if (list && blockData.hasCounterData()) {
         QTextListFormat listFormat = list->format();
-        if (! blockData.counterText().isEmpty()) {
+        if (!blockData.counterText().isEmpty()) {
             QFont font(blockData.labelFormat().font(), d->documentLayout->paintDevice());
 
             KoListStyle::Style listStyle = static_cast<KoListStyle::Style>(listFormat.style());

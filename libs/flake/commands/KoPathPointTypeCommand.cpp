@@ -207,7 +207,7 @@ void KoPathPointTypeCommand::undoChanges(const QList<PointData> &data)
 bool KoPathPointTypeCommand::appendPointData(KoPathPointData data)
 {
     KoPathPoint *point = data.pathShape->pointByIndex(data.pointIndex);
-    if (! point)
+    if (!point)
         return false;
 
     PointData pointData(data);

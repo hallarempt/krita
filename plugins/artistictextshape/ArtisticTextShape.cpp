@@ -539,7 +539,7 @@ void ArtisticTextShape::setTextAnchor(TextAnchor anchor)
 
     update();
     updateSizeAndPosition();
-    if (! isOnPath()) {
+    if (!isOnPath()) {
         QTransform m;
         m.translate(newOffset - oldOffset, 0.0);
         setTransformation(transformation() * m);
@@ -555,7 +555,7 @@ ArtisticTextShape::TextAnchor ArtisticTextShape::textAnchor() const
 
 bool ArtisticTextShape::putOnPath(KoPathShape *path)
 {
-    if (! path) {
+    if (!path) {
         return false;
     }
 
@@ -563,7 +563,7 @@ bool ArtisticTextShape::putOnPath(KoPathShape *path)
         return false;
     }
 
-    if (! path->addDependee(this)) {
+    if (!path->addDependee(this)) {
         return false;
     }
 
@@ -628,7 +628,7 @@ ArtisticTextShape::LayoutMode ArtisticTextShape::layout() const
 {
     if (m_path) {
         return OnPathShape;
-    } else if (! m_baseline.isEmpty()) {
+    } else if (!m_baseline.isEmpty()) {
         return OnPath;
     } else {
         return Straight;
@@ -1228,7 +1228,7 @@ bool ArtisticTextShape::loadSvg(const KoXmlElement &textElement, SvgLoadingConte
             }
         }
         // parse the start offset
-        if (! parentElement.attribute("startOffset").isEmpty()) {
+        if (!parentElement.attribute("startOffset").isEmpty()) {
             QString start = parentElement.attribute("startOffset");
             if (start.endsWith('%')) {
                 offset = 0.01 * start.remove('%').toDouble();
@@ -1275,7 +1275,7 @@ bool ArtisticTextShape::loadSvg(const KoXmlElement &textElement, SvgLoadingConte
     }
 
     // adjust position by baseline offset
-    if (! isOnPath()) {
+    if (!isOnPath()) {
         setPosition(position() - QPointF(0, baselineOffset()));
     }
 

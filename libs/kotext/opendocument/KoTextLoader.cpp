@@ -702,7 +702,7 @@ void KoTextLoader::loadList(const KoXmlElement &element, QTextCursor &cursor)
         level = qBound(0, level, 10);
     }
 
-    if (! numberedParagraph) {
+    if (!numberedParagraph) {
         d->setCurrentList(d->currentLists[d->currentListLevel - 2], level);
     }
 
@@ -1197,7 +1197,7 @@ void KoTextLoader::loadTable(const KoXmlElement &tableElem, QTextCursor &cursor)
     }
 
     QString tableTemplateName = tableElem.attributeNS(KoXmlNS::table, "template-name", "");
-    if (! tableTemplateName.isEmpty()) {
+    if (!tableTemplateName.isEmpty()) {
         if(KoTextTableTemplate *tableTemplate = d->styleManager->tableTemplate(tableTemplateName)) {
             tableFormat.setProperty(KoTableStyle::TableTemplate, tableTemplate->styleId());
         }
@@ -1271,7 +1271,7 @@ void KoTextLoader::loadTable(const KoXmlElement &tableElem, QTextCursor &cursor)
     QList<KoXmlElement> rowTags;
 
     forEachElement(tblTag, tableElem) {
-        if (! tblTag.isNull()) {
+        if (!tblTag.isNull()) {
             const QString tblLocalName = tblTag.localName();
             if (tblTag.namespaceURI() == KoXmlNS::table) {
                 if (tblLocalName == "table-column") {

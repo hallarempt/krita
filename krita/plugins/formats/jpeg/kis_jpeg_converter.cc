@@ -219,7 +219,7 @@ KisImageBuilder_Result KisJPEGConverter::decode(const QUrl &uri)
     }
 
     // Creating the KisImageWSP
-    if (! m_image) {
+    if (!m_image) {
         m_image = new KisImage(m_doc->createUndoStore(),  cinfo.image_width,  cinfo.image_height, cs, "built image");
         Q_CHECK_PTR(m_image);
     }

@@ -41,7 +41,7 @@ public:
 
     ~Private()
     {
-        if (! gcStack.isEmpty())
+        if (!gcStack.isEmpty())
             warnFlake << "the context stack is not empty (current count" << gcStack.size() << ", expected 0)";
         qDeleteAll(gcStack);
         gcStack.clear();
@@ -83,7 +83,7 @@ SvgGraphicsContext *SvgLoadingContext::pushGraphicsContext(const KoXmlElement &e
     SvgGraphicsContext *gc = new SvgGraphicsContext;
 
     // copy data from current context
-    if (! d->gcStack.isEmpty() && inherit)
+    if (!d->gcStack.isEmpty() && inherit)
         *gc = *(d->gcStack.top());
 
     gc->filterId.clear(); // filters are not inherited
@@ -127,7 +127,7 @@ QString SvgLoadingContext::xmlBaseDir() const
 QString SvgLoadingContext::absoluteFilePath(const QString &href)
 {
     QFileInfo info(href);
-    if (! info.isRelative())
+    if (!info.isRelative())
         return href;
 
     SvgGraphicsContext *gc = currentGC();
@@ -135,7 +135,7 @@ QString SvgLoadingContext::absoluteFilePath(const QString &href)
         return d->initialXmlBaseDir;
 
     QString baseDir = d->initialXmlBaseDir;
-    if (! gc->xmlBaseDir.isEmpty())
+    if (!gc->xmlBaseDir.isEmpty())
         baseDir = absoluteFilePath(gc->xmlBaseDir);
 
     QFileInfo pathInfo(QFileInfo(baseDir).filePath());

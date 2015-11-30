@@ -170,7 +170,7 @@ public:
     {
         int count = 0;
         for(int i = m_layout->count()-1; i >= 0; --i) {
-            if (! static_cast<QWidgetItem*> (m_layout->itemAt(i))->isEmpty())
+            if (!static_cast<QWidgetItem*> (m_layout->itemAt(i))->isEmpty())
                 ++count;
         }
         return count;

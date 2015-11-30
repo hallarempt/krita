@@ -49,7 +49,7 @@ static const int measurementTextAboveBelowMargin = 1;
 
 void RulerTabChooser::mousePressEvent(QMouseEvent *)
 {
-    if (! m_showTabs) {
+    if (!m_showTabs) {
         return;
     }
 
@@ -72,7 +72,7 @@ void RulerTabChooser::mousePressEvent(QMouseEvent *)
 
 void RulerTabChooser::paintEvent(QPaintEvent *)
 {
-    if (! m_showTabs) {
+    if (!m_showTabs) {
         return;
     }
 
@@ -164,7 +164,7 @@ QRectF HorizontalPaintingStrategy::drawBackground(const KoRulerPrivate *d, QPain
 
 void HorizontalPaintingStrategy::drawTabs(const KoRulerPrivate *d, QPainter &painter)
 {
-    if (! d->showTabs)
+    if (!d->showTabs)
         return;
     QPolygonF polygon;
 

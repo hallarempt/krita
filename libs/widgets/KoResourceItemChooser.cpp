@@ -371,7 +371,7 @@ void KoResourceItemChooser::activated(const QModelIndex &/*index*/)
 void KoResourceItemChooser::updateButtonState()
 {
     QAbstractButton *removeButton = d->buttonGroup->button(Button_Remove);
-    if (! removeButton)
+    if (!removeButton)
         return;
 
     KoResource *resource = currentResource();

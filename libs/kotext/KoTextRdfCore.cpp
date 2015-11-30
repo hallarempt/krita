@@ -30,7 +30,7 @@ bool KoTextRdfCore::saveRdf( QSharedPointer<Soprano::Model> model, Soprano::Stat
 {
     bool ok = false;
 
-    if (! store->open(fileName)) {
+    if (!store->open(fileName)) {
         return false;
     }
 

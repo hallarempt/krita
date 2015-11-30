@@ -31,7 +31,7 @@ QMap<QObject *, OdfTextTrackStyles *> OdfTextTrackStyles::instances;
 
 OdfTextTrackStyles *OdfTextTrackStyles::instance(KoStyleManager *manager)
 {
-    if (! instances.contains(manager)) {
+    if (!instances.contains(manager)) {
         instances[manager] = new OdfTextTrackStyles(manager);
         connect(manager,SIGNAL(destroyed(QObject *)),instances[manager], SLOT(styleManagerDied(QObject *)));
     }
@@ -41,7 +41,7 @@ OdfTextTrackStyles *OdfTextTrackStyles::instance(KoStyleManager *manager)
 
 void OdfTextTrackStyles::registerDocument(QTextDocument *qDoc)
 {
-    if (! m_documents.contains(qDoc)) {
+    if (!m_documents.contains(qDoc)) {
         m_documents.append(qDoc);
         connect(qDoc,SIGNAL(destroyed(QObject *)), this, SLOT(documentDied(QObject *)));
     }

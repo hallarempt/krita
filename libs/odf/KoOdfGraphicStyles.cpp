@@ -96,7 +96,7 @@ void KoOdfGraphicStyles::saveOdfFillStyle(KoGenStyle &styleFill, KoGenStyles& ma
     case Qt::SolidPattern:
         styleFill.addProperty("draw:fill", "solid", propertyType);
         styleFill.addProperty("draw:fill-color", brush.color().name(), propertyType);
-        if (! brush.isOpaque())
+        if (!brush.isOpaque())
             styleFill.addProperty("draw:opacity", QString("%1%").arg(brush.color().alphaF() * 100.0), propertyType);
         break;
     case Qt::NoBrush:
@@ -242,7 +242,7 @@ QString KoOdfGraphicStyles::saveOdfGradientStyle(KoGenStyles &mainStyles, const 
     else
         gradientStyle.addAttribute("svg:spreadMethod", "pad");
 
-    if (! brush.transform().isIdentity()) {
+    if (!brush.transform().isIdentity()) {
         gradientStyle.addAttribute("svg:gradientTransform", saveTransformation(brush.transform()));
     }
 
@@ -295,7 +295,7 @@ qreal percent(const KoXmlElement &element, const QString &ns, const QString &typ
 QBrush KoOdfGraphicStyles::loadOdfGradientStyleByName(const KoOdfStylesReader &stylesReader, const QString &styleName, const QSizeF &size)
 {
     KoXmlElement* e = stylesReader.drawStyles("gradient")[styleName];
-    if (! e)
+    if (!e)
         return QBrush();
 
     QGradient * gradient = 0;
@@ -387,7 +387,7 @@ QBrush KoOdfGraphicStyles::loadOdfGradientStyleByName(const KoOdfStylesReader &s
             focalPoint.setY(percent(*e, KoXmlNS::svg, "fy", QString(), size.height()));
             gradient = new QRadialGradient(center, r, focalPoint );
         }
-        if (! gradient)
+        if (!gradient)
             return QBrush();
 
         gradient->setCoordinateMode(QGradient::ObjectBoundingMode);
@@ -454,7 +454,7 @@ QBrush KoOdfGraphicStyles::loadOdfGradientStyleByName(const KoOdfStylesReader &s
         }
     }
 
-    if (! gradient)
+    if (!gradient)
         return QBrush();
 
     QBrush resultBrush(*gradient);
@@ -474,7 +474,7 @@ QBrush KoOdfGraphicStyles::loadOdfFillStyle(const KoStyleStack &styleStack, cons
             tmpBrush.setColor(styleStack.property(KoXmlNS::draw, "fill-color"));
         if (styleStack.hasProperty(KoXmlNS::draw, "opacity")) {
             QString opacity = styleStack.property(KoXmlNS::draw, "opacity");
-            if (! opacity.isEmpty() && opacity.right(1) == "%") {
+            if (!opacity.isEmpty() && opacity.right(1) == "%") {
                 float percent = opacity.left(opacity.length() - 1).toFloat();
                 QColor color = tmpBrush.color();
                 color.setAlphaF(percent / 100.0);

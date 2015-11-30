@@ -122,11 +122,11 @@ bool OrthogonalSnapStrategy::snap(const QPointF &mousePosition, KoSnapProxy * pr
 QPainterPath OrthogonalSnapStrategy::decoration(const KoViewConverter &/*converter*/) const
 {
     QPainterPath decoration;
-    if (! m_hLine.isNull()) {
+    if (!m_hLine.isNull()) {
         decoration.moveTo(m_hLine.p1());
         decoration.lineTo(m_hLine.p2());
     }
-    if (! m_vLine.isNull()) {
+    if (!m_vLine.isNull()) {
         decoration.moveTo(m_vLine.p1());
         decoration.lineTo(m_vLine.p2());
     }
@@ -190,7 +190,7 @@ bool ExtensionSnapStrategy::snap(const QPointF &mousePosition, KoSnapProxy * pro
 
     Q_FOREACH (KoShape * shape, shapes) {
         KoPathShape * path = dynamic_cast<KoPathShape*>(shape);
-        if (! path) {
+        if (!path) {
             continue;
         }
         QTransform matrix = path->absoluteTransformation(0);
@@ -343,7 +343,7 @@ QPointF ExtensionSnapStrategy::extensionDirection(KoPathPoint * point, const QTr
             return matrix.map(point->point()) - matrix.map(point->controlPoint2());
         } else {
             KoPathPoint * next = path->pointByIndex(KoPathPointIndex(index.first, index.second + 1));
-            if (! next){
+            if (!next){
                 return QPointF();
             }
             else if (next->activeControlPoint1()) {
@@ -360,7 +360,7 @@ QPointF ExtensionSnapStrategy::extensionDirection(KoPathPoint * point, const QTr
         }
         else {
             KoPathPoint * prev = path->pointByIndex(KoPathPointIndex(index.first, index.second - 1));
-            if (! prev){
+            if (!prev){
                 return QPointF();
             }
             else if (prev->activeControlPoint2()) {
@@ -395,7 +395,7 @@ bool IntersectionSnapStrategy::snap(const QPointF &mousePosition, KoSnapProxy *p
         for (int j = i + 1; j < segmentCount; ++j) {
             QList<QPointF> isects = s1.intersections(segments[j]);
             Q_FOREACH (const QPointF &point, isects) {
-                if (! rect.contains(point))
+                if (!rect.contains(point))
                     continue;
                 qreal distance = squareDistance(mousePosition, point);
                 if (distance < maxDistance && distance < minDistance) {
@@ -428,7 +428,7 @@ GridSnapStrategy::GridSnapStrategy()
 bool GridSnapStrategy::snap(const QPointF &mousePosition, KoSnapProxy *proxy, qreal maxSnapDistance)
 {
     Q_ASSERT(std::isfinite(maxSnapDistance));
-    if (! proxy->canvas()->snapToGrid())
+    if (!proxy->canvas()->snapToGrid())
         return false;
 
     // The 1e-10 here is a workaround for some weird division problem.

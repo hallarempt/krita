@@ -105,7 +105,7 @@ QGradient* KoGradientHelper::convertGradient(const QGradient * gradient, QGradie
 
 QColor KoGradientHelper::colorAt(qreal position, const QGradientStops &stops)
 {
-    if (! stops.count())
+    if (!stops.count())
         return QColor();
 
     if (stops.count() == 1)

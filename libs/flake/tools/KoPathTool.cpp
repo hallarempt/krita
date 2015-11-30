@@ -275,7 +275,7 @@ void KoPathTool::pointToLine()
                 pointToChange.append(*it);
         }
 
-        if (! pointToChange.isEmpty()) {
+        if (!pointToChange.isEmpty()) {
             d->canvas->addCommand(new KoPathPointTypeCommand(pointToChange, KoPathPointTypeCommand::Line));
             updateActions();
         }
@@ -296,7 +296,7 @@ void KoPathTool::pointToCurve()
                 pointToChange.append(*it);
         }
 
-        if (! pointToChange.isEmpty()) {
+        if (!pointToChange.isEmpty()) {
             d->canvas->addCommand(new KoPathPointTypeCommand(pointToChange, KoPathPointTypeCommand::Curve));
             updateActions();
         }
@@ -554,14 +554,14 @@ void KoPathTool::mouseMoveEvent(KoPointerEvent *event)
 
         } else {
             QList<KoPathPoint*> points = shape->pointsAt(roi);
-            if (! points.empty()) {
+            if (!points.empty()) {
                 // find the nearest control point from all points within the roi
                 KoPathPoint * bestPoint = 0;
                 KoPathPoint::PointType bestPointType = KoPathPoint::Node;
                 qreal minDistance = HUGE_VAL;
                 Q_FOREACH (KoPathPoint *p, points) {
                     // the node point must be hit if the point is not selected yet
-                    if (! m_pointSelection.contains(p) && ! roi.contains(p->point()))
+                    if (!m_pointSelection.contains(p) && ! roi.contains(p->point()))
                         continue;
 
                     // check for the control points first as otherwise it is no longer
@@ -593,7 +593,7 @@ void KoPathTool::mouseMoveEvent(KoPointerEvent *event)
                     }
                 }
 
-                if (! bestPoint)
+                if (!bestPoint)
                     return;
 
                 useCursor(m_moveCursor);
@@ -671,7 +671,7 @@ void KoPathTool::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Alt:
         case Qt::Key_Shift:
         case Qt::Key_Meta:
-            if (! event->isAutoRepeat()) {
+            if (!event->isAutoRepeat()) {
                 m_currentStrategy->handleMouseMove(m_lastPoint, event->modifiers());
             }
             break;
@@ -728,7 +728,7 @@ void KoPathTool::keyReleaseEvent(QKeyEvent *event)
         case Qt::Key_Alt:
         case Qt::Key_Shift:
         case Qt::Key_Meta:
-            if (! event->isAutoRepeat()) {
+            if (!event->isAutoRepeat()) {
                 m_currentStrategy->handleMouseMove(m_lastPoint, Qt::NoModifier);
             }
             break;

@@ -295,7 +295,7 @@ bool KoDocumentInfo::loadOasisAboutInfo(const KoXmlNode &metaDoc)
     KoXmlElement e;
     forEachElement(e, metaDoc) {
         QString tag(e.localName());
-        if (! m_aboutTags.contains(tag) && tag != "generator") {
+        if (!m_aboutTags.contains(tag) && tag != "generator") {
             continue;
         }
 

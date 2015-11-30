@@ -75,7 +75,7 @@ KoPathPointMoveCommand::~KoPathPointMoveCommand()
 void KoPathPointMoveCommand::redo()
 {
     KUndo2Command::redo();
-    if (! d->undoCalled)
+    if (!d->undoCalled)
         return;
 
     d->applyOffset(1.0);

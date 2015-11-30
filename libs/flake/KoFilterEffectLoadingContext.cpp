@@ -113,7 +113,7 @@ qreal KoFilterEffectLoadingContext::convertFilterPrimitiveUnitsY(qreal value) co
 QString KoFilterEffectLoadingContext::pathFromHref(const QString &href) const
 {
     QFileInfo info(href);
-    if (! info.isRelative())
+    if (!info.isRelative())
         return href;
 
     QFileInfo pathInfo(QFileInfo(d->basePath).filePath());

@@ -56,7 +56,7 @@ KoPathPointInsertCommand::KoPathPointInsertCommand(const QList<KoPathPointData> 
         KoPathSegment segment = pathShape->segmentByIndex(it->pointIndex);
 
         // should not happen but to be sure
-        if (! segment.isValid())
+        if (!segment.isValid())
             continue;
 
         d->pointDataList.append(*it);

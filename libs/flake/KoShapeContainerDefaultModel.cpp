@@ -91,7 +91,7 @@ void KoShapeContainerDefaultModel::proposeMove(KoShape *shape, QPointF &move)
         allowedToMove = parent->isEditable();
         parent = parent->parent();
     }
-    if (! allowedToMove) {
+    if (!allowedToMove) {
         move.setX(0);
         move.setY(0);
     }

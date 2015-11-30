@@ -463,7 +463,7 @@ void KoStrokeConfigWidget::applyMarkerChanges(KoMarkerData::MarkerPosition posit
     KoCanvasController* canvasController = KoToolManager::instance()->activeCanvasController();
     KoSelection *selection = canvasController->canvas()->shapeManager()->selection();
 
-    if (! selection || !selection->count()) {
+    if (!selection || !selection->count()) {
         return;
     }
 

@@ -63,7 +63,7 @@ KoPathCombineCommand::KoPathCombineCommand(KoShapeBasedDocumentBase *controller,
     // combine the paths
     Q_FOREACH (KoPathShape* path, d->paths) {
         d->combinedPath->combine(path);
-        if (! d->combinedPathParent && path->parent())
+        if (!d->combinedPathParent && path->parent())
             d->combinedPathParent = path->parent();
     }
 }
@@ -77,7 +77,7 @@ void KoPathCombineCommand::redo()
 {
     KUndo2Command::redo();
 
-    if (! d->paths.size())
+    if (!d->paths.size())
         return;
 
     d->isCombined = true;
@@ -99,7 +99,7 @@ void KoPathCombineCommand::redo()
 
 void KoPathCombineCommand::undo()
 {
-    if (! d->paths.size())
+    if (!d->paths.size())
         return;
 
     d->isCombined = false;

@@ -80,7 +80,7 @@ void KoSelectionPrivate::selectionChangedEvent()
 
 void KoSelectionPrivate::selectGroupChildren(KoShapeGroup *group)
 {
-    if (! group)
+    if (!group)
         return;
 
     Q_FOREACH (KoShape *shape, group->shapes()) {
@@ -96,7 +96,7 @@ void KoSelectionPrivate::selectGroupChildren(KoShapeGroup *group)
 
 void KoSelectionPrivate::deselectGroupChildren(KoShapeGroup *group)
 {
-    if (! group)
+    if (!group)
         return;
 
     Q_FOREACH (KoShape *shape, group->shapes()) {
@@ -151,8 +151,8 @@ void KoSelection::select(KoShape *shape, bool recursive)
         KoShapeContainer *parent = shape->parent();
         while (parent) {
             KoShapeGroup *parentGroup = dynamic_cast<KoShapeGroup*>(parent);
-            if (! parentGroup) break;
-            if (! d->selectedShapes.contains(parentGroup)) {
+            if (!parentGroup) break;
+            if (!d->selectedShapes.contains(parentGroup)) {
                 d->selectedShapes << parentGroup;
                 d->selectGroupChildren(parentGroup);
             }
@@ -195,7 +195,7 @@ void KoSelection::select(KoShape *shape, bool recursive)
 void KoSelection::deselect(KoShape *shape, bool recursive)
 {
     Q_D(KoSelection);
-    if (! d->selectedShapes.contains(shape))
+    if (!d->selectedShapes.contains(shape))
         return;
 
     d->selectedShapes.removeAll(shape);

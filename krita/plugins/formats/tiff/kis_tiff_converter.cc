@@ -360,7 +360,7 @@ KisImageBuilder_Result KisTIFFConverter::readTIFFDirectory(TIFF* image)
         return KisImageBuilder_RESULT_INVALID_ARG;
     }
     // Creating the KisImageWSP
-    if (! m_image) {
+    if (!m_image) {
         m_image = new KisImage(m_doc->createUndoStore(), width, height, cs, "built image");
         m_image->setResolution( POINT_TO_INCH(xres), POINT_TO_INCH(yres )); // It is the "invert" macro because we convert from pointer-per-inchs to points
         Q_CHECK_PTR(m_image);

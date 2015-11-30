@@ -33,7 +33,7 @@ public:
     }
 
     ~Private() {
-        if (! deleteShapes)
+        if (!deleteShapes)
             return;
 
         Q_FOREACH (KoShape *shape, shapes)
@@ -77,7 +77,7 @@ KoShapeDeleteCommand::~KoShapeDeleteCommand()
 void KoShapeDeleteCommand::redo()
 {
     KUndo2Command::redo();
-    if (! d->controller)
+    if (!d->controller)
         return;
 
     for (int i = 0; i < d->shapes.count(); i++) {
@@ -92,7 +92,7 @@ void KoShapeDeleteCommand::redo()
 void KoShapeDeleteCommand::undo()
 {
     KUndo2Command::undo();
-    if (! d->controller)
+    if (!d->controller)
         return;
 
     for (int i = 0; i < d->shapes.count(); i++) {

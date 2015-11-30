@@ -59,7 +59,7 @@ bool KoOdfPaste::paste(KoOdf::DocumentType documentType, const QByteArray &bytes
     KoOdfReadStore odfStore(store); // KoOdfReadStore does not delete the store on destruction
 
     QString errorMessage;
-    if (! odfStore.loadAndParse(errorMessage)) {
+    if (!odfStore.loadAndParse(errorMessage)) {
         warnOdf << "loading and parsing failed:" << errorMessage;
         delete store;
         return false;

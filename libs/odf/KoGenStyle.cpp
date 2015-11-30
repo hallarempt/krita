@@ -501,7 +501,7 @@ bool KoGenStyle::isEmpty() const
     if (!m_attributes.isEmpty() || ! m_maps.isEmpty())
         return false;
     for (uint i = 0 ; i <= LastPropertyType; ++i)
-        if (! m_properties[i].isEmpty())
+        if (!m_properties[i].isEmpty())
             return false;
     return true;
 }

@@ -61,7 +61,7 @@ void SvgStyleWriter::saveSvgStyle(KoShape *shape, SvgSavingContext &context)
     saveSvgStroke(shape, context);
     saveSvgEffects(shape, context);
     saveSvgClipping(shape, context);
-    if (! shape->isVisible())
+    if (!shape->isVisible())
         context.shapeWriter().addAttribute("display", "none");
     if (shape->transparency() > 0.0)
         context.shapeWriter().addAttribute("opacity", 1.0 - shape->transparency());
@@ -69,7 +69,7 @@ void SvgStyleWriter::saveSvgStyle(KoShape *shape, SvgSavingContext &context)
 
 void SvgStyleWriter::saveSvgFill(KoShape *shape, SvgSavingContext &context)
 {
-    if (! shape->background()) {
+    if (!shape->background()) {
         context.shapeWriter().addAttribute("fill", "none");
     }
 
@@ -102,7 +102,7 @@ void SvgStyleWriter::saveSvgFill(KoShape *shape, SvgSavingContext &context)
 void SvgStyleWriter::saveSvgStroke(KoShape *shape, SvgSavingContext &context)
 {
     const KoShapeStroke * line = dynamic_cast<const KoShapeStroke*>(shape->stroke());
-    if (! line)
+    if (!line)
         return;
 
     QString strokeStr("none");
@@ -213,7 +213,7 @@ void SvgStyleWriter::saveSvgColorStops(const QGradientStops &colorStops, SvgSavi
 
 QString SvgStyleWriter::saveSvgGradient(const QGradient *gradient, const QTransform &gradientTransform, SvgSavingContext &context)
 {
-    if (! gradient)
+    if (!gradient)
         return QString();
 
     Q_ASSERT(gradient->coordinateMode() == QGradient::ObjectBoundingMode);

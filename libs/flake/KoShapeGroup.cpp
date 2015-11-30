@@ -205,7 +205,7 @@ bool KoShapeGroup::loadOdf(const KoXmlElement & element, KoShapeLoadingContext &
     QRectF bound;
     bool boundInitialized = false;
     Q_FOREACH (KoShape * shape, shapes()) {
-        if (! boundInitialized) {
+        if (!boundInitialized) {
             bound = shape->boundingRect();
             boundInitialized = true;
         } else

@@ -72,7 +72,7 @@ public:
                 int pageCount = 0;
                 QList<KoShapeConfigWidgetBase*> widgets;
                 Q_FOREACH (KoShapeConfigWidgetBase* panel, factory->createShapeOptionPanels()) {
-                    if (! panel->showOnShapeCreate())
+                    if (!panel->showOnShapeCreate())
                         continue;
                     panel->open(shape);
                     panel->connect(panel, SIGNAL(accept()), dialog, SLOT(accept()));

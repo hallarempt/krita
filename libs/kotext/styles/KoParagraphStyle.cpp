@@ -288,8 +288,8 @@ void KoParagraphStyle::applyParagraphListStyle(QTextBlock &block, const QTextBlo
     //                        since we can specify all info required in text:outline-style
     //Normal styles: we use the listStyle()
     if (blockFormat.hasProperty(OutlineLevel)) {
-        if (! d->list) {
-            if (! KoTextDocument(block.document()).headingList()) {
+        if (!d->list) {
+            if (!KoTextDocument(block.document()).headingList()) {
                 if (KoTextDocument(block.document()).styleManager() && KoTextDocument(block.document()).styleManager()->outlineStyle()) {
                     d->list = new KoList(block.document(), KoTextDocument(block.document()).styleManager()->outlineStyle());
                     KoTextDocument(block.document()).setHeadingList(d->list);
@@ -1246,7 +1246,7 @@ void KoParagraphStyle::loadOdf(const KoXmlElement *element, KoShapeLoadingContex
     KoCharacterStyle::loadOdfProperties(scontext);
 
     QString masterPage = element->attributeNS(KoXmlNS::style, "master-page-name", QString());
-    if (! masterPage.isEmpty()) {
+    if (!masterPage.isEmpty()) {
         setMasterPageName(masterPage);
     }
 
@@ -1298,11 +1298,11 @@ static ParagraphBorderData parseParagraphBorderData(const QString &dataString, c
 
     Q_FOREACH (const QString &v, bv) {
         // try style
-        if (! (parsedValues & ParagraphBorderData::Style)) {
+        if (!(parsedValues & ParagraphBorderData::Style)) {
             bool success = false;
             KoBorder::BorderStyle style = KoBorder::odfBorderStyle(v, &success);
             // workaround for not yet supported "hidden"
-            if (! success && (v == QLatin1String("hidden"))) {
+            if (!success && (v == QLatin1String("hidden"))) {
                 // map to "none" for now TODO: KoBorder needs to support "hidden"
                 style = KoBorder::BorderNone;
                 success = true;
@@ -1315,7 +1315,7 @@ static ParagraphBorderData parseParagraphBorderData(const QString &dataString, c
             }
         }
         // try color
-        if (! (parsedValues & ParagraphBorderData::Color)) {
+        if (!(parsedValues & ParagraphBorderData::Color)) {
             const QColor color(v);
             if (color.isValid()) {
                 borderData.color = color;
@@ -1325,7 +1325,7 @@ static ParagraphBorderData parseParagraphBorderData(const QString &dataString, c
             }
         }
         // try width
-        if (! (parsedValues & ParagraphBorderData::Width)) {
+        if (!(parsedValues & ParagraphBorderData::Width)) {
             const qreal width = KoUnit::parseValue(v);
             if (width >= 0.0) {
                 borderData.width = width;
@@ -1721,7 +1721,7 @@ void KoParagraphStyle::loadOdfProperties(KoShapeLoadingContext &scontext)
         setDropCapsDistance(distance);
 
         const QString dropstyle = dropCap.attributeNS(KoXmlNS::style, "style-name");
-        if (! dropstyle.isEmpty()) {
+        if (!dropstyle.isEmpty()) {
             KoSharedLoadingData *sharedData = scontext.sharedData(KOTEXT_SHARED_LOADING_ID);
             KoTextSharedLoadingData *textSharedData = 0;
             textSharedData = dynamic_cast<KoTextSharedLoadingData *>(sharedData);

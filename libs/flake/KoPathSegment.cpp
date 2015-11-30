@@ -73,7 +73,7 @@ public:
     QPointF evaluate(qreal t, BezierSegment *left, BezierSegment *right) const
     {
         int deg = degree();
-        if (! deg)
+        if (!deg)
             return QPointF();
 
         QVector<QVector<QPointF> > Vtemp(deg + 1);
@@ -113,14 +113,14 @@ public:
     {
         QList<qreal> rootParams;
 
-        if (! degree())
+        if (!degree())
             return rootParams;
 
         // Calculate how often the control polygon crosses the x-axis
         // This is the upper limit for the number of roots.
         int xAxisCrossings = controlPolygonZeros(points);
 
-        if (! xAxisCrossings) {
+        if (!xAxisCrossings) {
             // No solutions.
             return rootParams;
         }
@@ -564,12 +564,12 @@ KoPathSegment::KoPathSegment(KoPathPoint * first, KoPathPoint * second)
 KoPathSegment::KoPathSegment(const KoPathSegment & segment)
     : d(new Private(this, 0, 0))
 {
-    if (! segment.first() || segment.first()->parent())
+    if (!segment.first() || segment.first()->parent())
         setFirst(segment.first());
     else
         setFirst(new KoPathPoint(*segment.first()));
 
-    if (! segment.second() || segment.second()->parent())
+    if (!segment.second() || segment.second()->parent())
         setSecond(segment.second());
     else
         setSecond(new KoPathPoint(*segment.second()));
@@ -604,12 +604,12 @@ KoPathSegment &KoPathSegment::operator=(const KoPathSegment &rhs)
     if (this == &rhs)
         return (*this);
 
-    if (! rhs.first() || rhs.first()->parent())
+    if (!rhs.first() || rhs.first()->parent())
         setFirst(rhs.first());
     else
         setFirst(new KoPathPoint(*rhs.first()));
 
-    if (! rhs.second() || rhs.second()->parent())
+    if (!rhs.second() || rhs.second()->parent())
         setSecond(rhs.second());
     else
         setSecond(new KoPathPoint(*rhs.second()));
@@ -976,7 +976,7 @@ KoPathSegment KoPathSegment::mapped(const QTransform &matrix) const
 
 KoPathSegment KoPathSegment::toCubic() const
 {
-    if (! isValid())
+    if (!isValid())
         return KoPathSegment();
 
     KoPathPoint * p1 = new KoPathPoint(*d->first);
@@ -1176,7 +1176,7 @@ QList<QPointF> KoPathSegment::convexHull() const
         if (pIsRight)
             hull.append(cp);
         hull.append(d->second->point());
-        if (! pIsRight)
+        if (!pIsRight)
             hull.append(cp);
     } else if (deg == 3) {
         // we want a counter-clockwise oriented polygon
@@ -1188,7 +1188,7 @@ QList<QPointF> KoPathSegment::convexHull() const
         if (p1IsRight)
             hull.append(d->first->controlPoint2());
         hull.append(d->second->point());
-        if (! p1IsRight)
+        if (!p1IsRight)
             hull.append(d->first->controlPoint2());
 
         // now we have a counter-clockwise triangle with the points i,j,k
@@ -1204,7 +1204,7 @@ QList<QPointF> KoPathSegment::convexHull() const
             int prev = (3 + i - 1) % 3;
             int next = (i + 1) % 3;
             // check if point is only right of the n-th edge
-            if (! rightOfEdge[prev] && rightOfEdge[i] && ! rightOfEdge[next]) {
+            if (!rightOfEdge[prev] && rightOfEdge[i] && ! rightOfEdge[next]) {
                 // insert by breaking the n-th edge
                 hull.insert(i + 1, lastPoint);
                 break;

@@ -517,7 +517,7 @@ void DcrawSettingsWidget::setup(int advSettings)
                                 "<para>Specify the brightness level of output image. The default "
                                 "value is 1.0 (works in 8-bit mode only).</para>"));
 
-    if (! (advSettings & POSTPROCESSING))
+    if (!(advSettings & POSTPROCESSING))
     {
         d->brightnessLabel->hide();
         d->brightnessSpinBox->hide();
@@ -545,7 +545,7 @@ void DcrawSettingsWidget::setup(int advSettings)
     d->whitePointSpinBox->setWhatsThis(i18nc("@info:whatsthis", "<title>White point value</title>"
                                 "<para>Specify specific white point value of the output image.</para>"));
 
-    if (! (advSettings & BLACKWHITEPOINTS))
+    if (!(advSettings & BLACKWHITEPOINTS))
     {
         d->blackPointCheckBox->hide();
         d->blackPointSpinBox->hide();
@@ -740,7 +740,7 @@ void DcrawSettingsWidget::setup(int advSettings)
 
     addItem(d->colormanSettings, KisIconUtils::loadIcon("kdcraw").pixmap(16, 16), i18nc("@label", "Color Management"), QString("colormanagement"), false);
 
-    if (! (advSettings & COLORSPACE))
+    if (!(advSettings & COLORSPACE))
         removeItem(COLORMANAGEMENT);
 
     addStretch();

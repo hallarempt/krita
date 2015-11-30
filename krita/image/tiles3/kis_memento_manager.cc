@@ -260,7 +260,7 @@ void KisMementoManager::rollback(KisTileHashTable *ht)
 {
     commit();
 
-    if (! m_revisions.size()) return;
+    if (!m_revisions.size()) return;
 
     KisHistoryItem changeList = m_revisions.takeLast();
 

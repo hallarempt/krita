@@ -417,13 +417,13 @@ void KoSectionStyle::loadOdf(const KoXmlElement *element, KoOdfLoadingContext &c
                 columnData.append(datum);
             }
 
-            if (! columnData.isEmpty()) {
+            if (!columnData.isEmpty()) {
                 setColumnData(columnData);
             }
         }
 
         KoXmlElement columnSep = KoXml::namedItemNS(columns, KoXmlNS::style, "column-sep");
-        if (! columnSep.isNull()) {
+        if (!columnSep.isNull()) {
             if (columnSep.hasAttributeNS(KoXmlNS::style, "style"))
                 setSeparatorStyle(KoColumns::parseSeparatorStyle(columnSep.attributeNS(KoXmlNS::style, "style")));
             if (columnSep.hasAttributeNS(KoXmlNS::style, "width"))

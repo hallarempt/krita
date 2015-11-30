@@ -215,7 +215,7 @@ void KoPathToolSelection::update()
     while (it != m_shapePointMap.end()) {
         KoParameterShape *parameterShape = dynamic_cast<KoParameterShape*>(it.key());
         bool isParametricShape = parameterShape && parameterShape->isParametricShape();
-        if (! m_selectedShapes.contains(it.key()) || isParametricShape) {
+        if (!m_selectedShapes.contains(it.key()) || isParametricShape) {
             QSet<KoPathPoint *>::iterator pointIt(it.value().begin());
             for (; pointIt != it.value().end(); ++pointIt) {
                 m_selectedPoints.remove(*pointIt);

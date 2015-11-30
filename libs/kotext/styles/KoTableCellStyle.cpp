@@ -602,7 +602,7 @@ void KoTableCellStyle::loadOdf(const KoXmlElement *element, KoShapeLoadingContex
         d->name = element->attributeNS(KoXmlNS::style, "name", QString());
 
     QString masterPage = element->attributeNS(KoXmlNS::style, "master-page-name", QString());
-    if (! masterPage.isEmpty()) {
+    if (!masterPage.isEmpty()) {
         setMasterPageName(masterPage);
     }
 

@@ -987,7 +987,7 @@ bool KisDocument::savePreview(KoStore *store)
     KoStoreDevice io(store);
     if (!io.open(QIODevice::WriteOnly))
         return false;
-    if (! preview.save(&io, "PNG"))     // ### TODO What is -9 in quality terms?
+    if (!preview.save(&io, "PNG"))     // ### TODO What is -9 in quality terms?
         return false;
     io.close();
     return true;
@@ -1457,7 +1457,7 @@ bool KisDocument::loadNativeFormat(const QString & file_)
             pos++;
         } while (pos < 5);
         isRawXML = (qstrnicmp(buf, "<?xml", 5) == 0);
-        if (! isRawXML)
+        if (!isRawXML)
             // also check for broken MathML files, which seem to be rather common
             isRawXML = (qstrnicmp(buf, "<math", 5) == 0);   // file begins with <math ?
         //dbgUI <<"PATTERN=" << buf;

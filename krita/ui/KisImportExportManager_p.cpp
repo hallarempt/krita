@@ -63,7 +63,7 @@ KisFilterChooser::KisFilterChooser(QWidget *parent, const QStringList &mimeTypes
         QMimeDatabase db;
         QMimeType mime = db.mimeTypeForName(*it);
         const QString name = mime.isValid() ? mime.comment() : *it;
-        if (! name.isEmpty()) {
+        if (!name.isEmpty()) {
             QListWidgetItem *item = new QListWidgetItem(name, m_filterList);
             item->setData(32, *it);
         }

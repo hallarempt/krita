@@ -917,7 +917,7 @@ bool KoTextEditor::isEditProtected(bool useCached) const
     ProtectionCheckVisitor visitor(this);
 
     if (useCached) {
-        if (! d->editProtectionCached) {
+        if (!d->editProtectionCached) {
             recursivelyVisitSelection(d->document->rootFrame()->begin(), visitor);
             d->editProtected = visitor.abortVisiting();
             d->editProtectionCached = true;

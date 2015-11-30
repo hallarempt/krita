@@ -97,7 +97,7 @@ void KoParameterToPathCommandPrivate::copyPath(KoPathShape *destination, KoPathS
     int subpathCount = source->subpathCount();
     for (int subpathIndex = 0; subpathIndex < subpathCount; ++subpathIndex) {
         int pointCount = source->subpathPointCount(subpathIndex);
-        if (! pointCount)
+        if (!pointCount)
             continue;
 
         KoSubpath * subpath = new KoSubpath;

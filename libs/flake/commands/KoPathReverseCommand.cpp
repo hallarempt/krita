@@ -31,7 +31,7 @@ public:
     }
 
     void reverse() {
-        if (! paths.size())
+        if (!paths.size())
             return;
 
         Q_FOREACH (KoPathShape* shape, paths) {

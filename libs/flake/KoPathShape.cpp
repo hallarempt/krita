@@ -75,7 +75,7 @@ void KoPathShapePrivate::applyViewboxTransformation(const KoXmlElement &element)
 {
     // apply viewbox transformation
     const QRect viewBox = KoPathShape::loadOdfViewbox(element);
-    if (! viewBox.isEmpty()) {
+    if (!viewBox.isEmpty()) {
         // load the desired size
         QSizeF size;
         size.setWidth(KoUnit::parseValue(element.attributeNS(KoXmlNS::svg, "width", QString())));
@@ -211,7 +211,7 @@ bool KoPathShape::loadContourOdf(const KoXmlElement &element, KoShapeLoadingCont
 
     // apply viewbox transformation
     const QRect viewBox = KoPathShape::loadOdfViewbox(element);
-    if (! viewBox.isEmpty()) {
+    if (!viewBox.isEmpty()) {
         QSizeF size;
         size.setWidth(KoUnit::parseValue(element.attributeNS(KoXmlNS::svg, "width", QString())));
         size.setHeight(KoUnit::parseValue(element.attributeNS(KoXmlNS::svg, "height", QString())));
@@ -348,7 +348,7 @@ QRect KoPathShape::loadOdfViewbox(const KoXmlElement & element)
     QRect viewbox;
 
     QString data = element.attributeNS(KoXmlNS::svg, QLatin1String("viewBox"));
-    if (! data.isEmpty()) {
+    if (!data.isEmpty()) {
         data.replace(QLatin1Char(','), QLatin1Char(' '));
         const QStringList coordinates = data.simplified().split(QLatin1Char(' '), QString::SkipEmptyParts);
         if (coordinates.count() == 4) {
@@ -819,10 +819,10 @@ QList<KoPathSegment> KoPathShape::segmentsAt(const QRectF &r) const
                 break;
             KoPathSegment s(subpath->at(pointIndex), subpath->at((pointIndex + 1) % pointCount));
             QRectF controlRect = s.controlPointRect();
-            if (! r.intersects(controlRect) && ! controlRect.contains(r))
+            if (!r.intersects(controlRect) && ! controlRect.contains(r))
                 continue;
             QRectF bound = s.boundingRect();
-            if (! r.intersects(bound) && ! bound.contains(r))
+            if (!r.intersects(bound) && ! bound.contains(r))
                 continue;
 
             segments.append(s);
@@ -1181,7 +1181,7 @@ bool KoPathShape::addSubpath(KoSubpath * subpath, int subpathIndex)
 
 bool KoPathShape::combine(KoPathShape *path)
 {
-    if (! path)
+    if (!path)
         return false;
 
     QTransform pathMatrix = path->absoluteTransformation(0);
@@ -1205,14 +1205,14 @@ bool KoPathShape::combine(KoPathShape *path)
 
 bool KoPathShape::separate(QList<KoPathShape*> & separatedPaths)
 {
-    if (! m_subpaths.size())
+    if (!m_subpaths.size())
         return false;
 
     QTransform myMatrix = absoluteTransformation(0);
 
     Q_FOREACH (KoSubpath* subpath, m_subpaths) {
         KoPathShape *shape = new KoPathShape();
-        if (! shape) continue;
+        if (!shape) continue;
 
         shape->setStroke(stroke());
         shape->setShapeId(shapeId());
@@ -1233,7 +1233,7 @@ bool KoPathShape::separate(QList<KoPathShape*> & separatedPaths)
 
 void KoPathShapePrivate::closeSubpath(KoSubpath *subpath)
 {
-    if (! subpath)
+    if (!subpath)
         return;
 
     subpath->last()->setProperty(KoPathPoint::CloseSubpath);
@@ -1242,7 +1242,7 @@ void KoPathShapePrivate::closeSubpath(KoSubpath *subpath)
 
 void KoPathShapePrivate::closeMergeSubpath(KoSubpath *subpath)
 {
-    if (! subpath || subpath->size() < 2)
+    if (!subpath || subpath->size() < 2)
         return;
 
     KoPathPoint * lastPoint = subpath->last();
@@ -1492,7 +1492,7 @@ bool KoPathShape::hitTest(const QPointF &position) const
     }
 
     // if there is no shadow we can as well just leave
-    if (! shadow())
+    if (!shadow())
         return false;
 
     // the shadow has an offset to the shape, so we simply

@@ -365,7 +365,7 @@ KoToolBase *KoToolManager::toolById(KoCanvasBase *canvas, const QString &id) con
 
 KoCanvasController *KoToolManager::activeCanvasController() const
 {
-    if (! d->canvasData) return 0;
+    if (!d->canvasData) return 0;
     return d->canvasData->canvas;
 }
 
@@ -373,7 +373,7 @@ QString KoToolManager::preferredToolForSelection(const QList<KoShape*> &shapes)
 {
     QList<QString> types;
     Q_FOREACH (KoShape *shape, shapes)
-        if (! types.contains(shape->shapeId()))
+        if (!types.contains(shape->shapeId()))
             types.append(shape->shapeId());
 
     QString toolType = KoInteractionTool_ID;
@@ -643,7 +643,7 @@ void KoToolManager::Private::switchTool(const QString &id, bool temporary)
         canvasData->stack.push(canvasData->activeToolId);
     canvasData->activeToolId = id;
     KoToolBase *tool = canvasData->allTools.value(id);
-    if (! tool) {
+    if (!tool) {
         return;
     }
 
@@ -831,7 +831,7 @@ void KoToolManager::Private::detachCanvas(KoCanvasController *controller)
     QList<KoToolBase *> tools;
     Q_FOREACH (CanvasData *canvasData, canvasses.value(controller)) {
         Q_FOREACH (KoToolBase *tool, canvasData->allTools) {
-            if (! tools.contains(tool)) {
+            if (!tools.contains(tool)) {
                 tools.append(tool);
             }
         }
@@ -959,7 +959,7 @@ void KoToolManager::Private::selectionChanged(const QList<KoShape*> &shapes)
 
         foreach (KoShape *shape2, delegates) {
             Q_ASSERT(shape2);
-            if (! types.contains(shape2->shapeId())) {
+            if (!types.contains(shape2->shapeId())) {
                 types.append(shape2->shapeId());
             }
         }

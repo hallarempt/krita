@@ -250,7 +250,7 @@ QSizeF KoPatternBackground::patternOriginalSize() const
 void KoPatternBackground::paint(QPainter &painter, const KoViewConverter &converter, KoShapePaintingContext &/*context*/, const QPainterPath &fillPath) const
 {
     Q_D(const KoPatternBackground);
-    if (! d->imageData)
+    if (!d->imageData)
         return;
 
     painter.save();
@@ -302,7 +302,7 @@ void KoPatternBackground::paint(QPainter &painter, const KoViewConverter &conver
 void KoPatternBackground::fillStyle(KoGenStyle &style, KoShapeSavingContext &context)
 {
     Q_D(KoPatternBackground);
-    if (! d->imageData)
+    if (!d->imageData)
         return;
 
     switch (d->repeat) {
@@ -363,7 +363,7 @@ bool KoPatternBackground::loadStyle(KoOdfLoadingContext &context, const QSizeF &
 {
     Q_D(KoPatternBackground);
     KoStyleStack &styleStack = context.styleStack();
-    if (! styleStack.hasProperty(KoXmlNS::draw, "fill"))
+    if (!styleStack.hasProperty(KoXmlNS::draw, "fill"))
         return false;
 
     QString fillStyle = styleStack.property(KoXmlNS::draw, "fill");
@@ -373,7 +373,7 @@ bool KoPatternBackground::loadStyle(KoOdfLoadingContext &context, const QSizeF &
     QString styleName = styleStack.property(KoXmlNS::draw, "fill-image-name");
 
     KoXmlElement* e = context.stylesReader().drawStyles("fill-image")[styleName];
-    if (! e)
+    if (!e)
         return false;
 
     const QString href = e->attributeNS(KoXmlNS::xlink, "href", QString());
@@ -382,7 +382,7 @@ bool KoPatternBackground::loadStyle(KoOdfLoadingContext &context, const QSizeF &
 
     delete d->imageData;
     d->imageData = d->imageCollection->createImageData(href, context.store());
-    if (! d->imageData)
+    if (!d->imageData)
         return false;
 
     // read the pattern repeat style

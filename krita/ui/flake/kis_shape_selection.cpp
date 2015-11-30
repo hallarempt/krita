@@ -193,13 +193,13 @@ bool KisShapeSelection::saveSelection(KoStore * store) const
 
     manifestWriter->addManifestEntry("content.xml", "text/xml");
 
-    if (! mainStyles.saveOdfStylesDotXml(store, manifestWriter)) {
+    if (!mainStyles.saveOdfStylesDotXml(store, manifestWriter)) {
         return false;
     }
 
     manifestWriter->addManifestEntry("settings.xml", "text/xml");
 
-    if (! shapeContext.saveDataCenter(documentContext.odfStore.store(), documentContext.odfStore.manifestWriter()))
+    if (!shapeContext.saveDataCenter(documentContext.odfStore.store(), documentContext.odfStore.manifestWriter()))
         return false;
 
     // Write out manifest file
@@ -257,7 +257,7 @@ bool KisShapeSelection::loadSelection(KoStore* store)
         master = odfStore.styles().masterPages().value("Standard");
     else if (odfStore.styles().masterPages().contains("Default"))
         master = odfStore.styles().masterPages().value("Default");
-    else if (! odfStore.styles().masterPages().empty())
+    else if (!odfStore.styles().masterPages().empty())
         master = odfStore.styles().masterPages().begin().value();
 
     if (master) {

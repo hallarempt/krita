@@ -61,7 +61,7 @@ public:
             return;
 
         QTextBlock block = currentBlock();
-        if (! block.isValid()) {
+        if (!block.isValid()) {
             ruler->setShowIndents(false);
             ruler->setShowTabs(false);
             return;
@@ -82,7 +82,7 @@ public:
 
         QList<KoRuler::Tab> tabs;
         QVariant variant = format.property(KoParagraphStyle::TabPositions);
-        if (! variant.isNull()) {
+        if (!variant.isNull()) {
             Q_FOREACH (const QVariant & var, qvariant_cast<QList<QVariant> >(variant)) {
                 KoText::Tab textTab = var.value<KoText::Tab>();
                 KoRuler::Tab tab;
@@ -104,7 +104,7 @@ public:
 
     void indentsChanged() {
         QTextBlock block = currentBlock();
-        if (! block.isValid())
+        if (!block.isValid())
             return;
         QTextCursor cursor(block);
         QTextBlockFormat bf = cursor.blockFormat();

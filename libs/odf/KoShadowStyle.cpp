@@ -120,7 +120,7 @@ bool KoShadowStyle::loadOdf (const QString &data)
         // "Each shadow effect must specify a shadow offset and may optionally
         // specify a blur radius and a shadow color.", from CSS2 §7.16.5 "text-shadow"
         // But for some reason also no offset has been accepted before. TODO: which?
-        if (! words.isEmpty()) {
+        if (!words.isEmpty()) {
             if ((words.length() < 2) || (words.length() > 3))
                 return false;
 

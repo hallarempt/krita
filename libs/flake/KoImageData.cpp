@@ -69,7 +69,7 @@ QPixmap KoImageData::pixmap(const QSize &size)
 {
     if (!d) return QPixmap();
     QSize wantedSize = size;
-    if (! wantedSize.isValid()) {
+    if (!wantedSize.isValid()) {
         if (d->pixmap.isNull()) // we have a problem, Houston..
             wantedSize = QSize(100, 100);
         else

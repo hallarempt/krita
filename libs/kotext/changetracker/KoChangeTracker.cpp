@@ -384,7 +384,7 @@ void KoChangeTracker::loadOdfChanges(const KoXmlElement& element)
     if (element.namespaceURI() == KoXmlNS::text) {
         KoXmlElement tag;
         forEachElement(tag, element) {
-            if (! tag.isNull()) {
+            if (!tag.isNull()) {
                 const QString localName = tag.localName();
                 if (localName == "changed-region") {
                     KoChangeTrackerElement *changeElement = 0;
@@ -427,7 +427,7 @@ void KoChangeTracker::loadOdfChanges(const KoXmlElement& element)
         //This is the ODF 1.2 Change Format
         KoXmlElement tag;
         forEachElement(tag, element) {
-            if (! tag.isNull()) {
+            if (!tag.isNull()) {
                 const QString localName = tag.localName();
                 if (localName == "change-transaction") {
                     KoChangeTrackerElement *changeElement = 0;

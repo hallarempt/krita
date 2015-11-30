@@ -124,7 +124,7 @@ void KoResourcePopupAction::setCurrentBackground(QSharedPointer<KoShapeBackgroun
 
 void KoResourcePopupAction::indexChanged(const QModelIndex &modelIndex)
 {
-    if (! modelIndex.isValid()) {
+    if (!modelIndex.isValid()) {
         return;
     }
 

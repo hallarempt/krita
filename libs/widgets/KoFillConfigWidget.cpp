@@ -170,7 +170,7 @@ public:
     /// Apply the gradient stops using the shape background
     QSharedPointer<KoShapeBackground> applyFillGradientStops(KoShape *shape, const QGradientStops &stops)
     {
-        if (! shape || ! stops.count()) {
+        if (!shape || ! stops.count()) {
             return QSharedPointer<KoShapeBackground>();
         }
 
@@ -377,7 +377,7 @@ void KoFillConfigWidget::colorChanged()
     QSharedPointer<KoShapeBackground> fill(new KoColorBackground(d->colorAction->currentColor()));
     KUndo2Command *firstCommand = 0;
     foreach (KoShape *shape, selectedShapes) {
-        if (! firstCommand) {
+        if (!firstCommand) {
             firstCommand = new KoShapeBackgroundCommand(shape, fill);
         } else {
             new KoShapeBackgroundCommand(shape, fill, firstCommand);
@@ -406,10 +406,10 @@ void KoFillConfigWidget::gradientChanged(QSharedPointer<KoShapeBackground>  back
     KUndo2Command *firstCommand = 0;
     foreach (KoShape *shape, selectedShapes) {
         QSharedPointer<KoShapeBackground> fill = d->applyFillGradientStops(shape, newStops);
-        if (! fill) {
+        if (!fill) {
             continue;
         }
-        if (! firstCommand) {
+        if (!firstCommand) {
             firstCommand = new KoShapeBackgroundCommand(shape, fill);
         } else {
             new KoShapeBackgroundCommand(shape, fill, firstCommand);
@@ -422,7 +422,7 @@ void KoFillConfigWidget::gradientChanged(QSharedPointer<KoShapeBackground>  back
 void KoFillConfigWidget::patternChanged(QSharedPointer<KoShapeBackground>  background)
 {
     QSharedPointer<KoPatternBackground> patternBackground = qSharedPointerDynamicCast<KoPatternBackground>(background);
-    if (! patternBackground) {
+    if (!patternBackground) {
         return;
     }
 
@@ -443,7 +443,7 @@ void KoFillConfigWidget::patternChanged(QSharedPointer<KoShapeBackground>  backg
 void KoFillConfigWidget::shapeChanged()
 {
     KoShape *shape = currentShape();
-    if (! shape) {
+    if (!shape) {
         d->group->button(KoFillConfigWidget::None)->setChecked(false);
         d->group->button(KoFillConfigWidget::Solid)->setChecked(false);
         d->group->button(KoFillConfigWidget::Gradient)->setChecked(false);
@@ -460,7 +460,7 @@ void KoFillConfigWidget::shapeChanged()
 
 void KoFillConfigWidget::updateWidget(KoShape *shape)
 {
-    if (! shape) {
+    if (!shape) {
         return;
     }
 
@@ -475,7 +475,7 @@ void KoFillConfigWidget::updateWidget(KoShape *shape)
 
     d->colorButton->setEnabled(true);
     QSharedPointer<KoShapeBackground> background = shape->background();
-    if (! background) {
+    if (!background) {
         // No Fill
         d->group->button(KoFillConfigWidget::None)->setChecked(true);
         d->colorButton->setDefaultAction(d->noFillAction);

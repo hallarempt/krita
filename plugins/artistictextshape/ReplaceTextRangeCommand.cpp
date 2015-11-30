@@ -80,7 +80,7 @@ void ReplaceTextRangeCommand::undo()
 {
     KUndo2Command::undo();
 
-    if (! m_shape) {
+    if (!m_shape) {
         return;
     }
 

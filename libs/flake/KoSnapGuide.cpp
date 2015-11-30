@@ -130,7 +130,7 @@ QPointF KoSnapGuide::snap(const QPointF &mousePosition, Qt::KeyboardModifiers mo
 {
     d->currentStrategy = 0;
 
-    if (! d->active || (modifiers & Qt::ShiftModifier))
+    if (!d->active || (modifiers & Qt::ShiftModifier))
         return mousePosition;
 
     KoSnapProxy proxy(this);
@@ -143,7 +143,7 @@ QPointF KoSnapGuide::snap(const QPointF &mousePosition, Qt::KeyboardModifiers mo
     foreach (KoSnapStrategy *strategy, d->strategies) {
         if (d->usedStrategies & strategy->type()
                 || strategy->type() == GridSnapping || strategy->type() == CustomSnapping) {
-            if (! strategy->snap(mousePosition, &proxy, maxSnapDistance))
+            if (!strategy->snap(mousePosition, &proxy, maxSnapDistance))
                 continue;
 
             QPointF snapCandidate = strategy->snappedPosition();
@@ -155,7 +155,7 @@ QPointF KoSnapGuide::snap(const QPointF &mousePosition, Qt::KeyboardModifiers mo
         }
     }
 
-    if (! d->currentStrategy)
+    if (!d->currentStrategy)
         return mousePosition;
 
     return d->currentStrategy->snappedPosition();
@@ -175,7 +175,7 @@ QRectF KoSnapGuide::boundingRect()
 
 void KoSnapGuide::paint(QPainter &painter, const KoViewConverter &converter)
 {
-    if (! d->currentStrategy || ! d->active)
+    if (!d->currentStrategy || ! d->active)
         return;
 
     QPainterPath decoration = d->currentStrategy->decoration(converter);

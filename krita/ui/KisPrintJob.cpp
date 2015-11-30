@@ -52,7 +52,7 @@ QAbstractPrintDialog::PrintDialogOptions KisPrintJob::printDialogOptions() const
 
 bool KisPrintJob::canPrint()
 {
-    if (! printer().isValid()) {
+    if (!printer().isValid()) {
         return false;
     }
 

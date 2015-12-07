@@ -4,7 +4,7 @@ message(STATUS "Using CMake version: ${CMAKE_VERSION}")
 
 cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
-set(MIN_QT_VERSION 5.3.0)
+set(MIN_QT_VERSION 5.4.0)
 set(MIN_FRAMEWORKS_VERSION 5.7.0)
 
 cmake_policy(SET CMP0002 OLD)
@@ -26,6 +26,8 @@ if(NOT ${CMAKE_VERSION} VERSION_LESS 3.3.0)
     cmake_policy(SET CMP0059 OLD)
     cmake_policy(SET CMP0063 OLD)
 endif()
+
+set(APPLE_SUPPRESS_X11_WARNING TRUE)
 
 # QT5TODO: remove KDE4_BUILD_TESTS once all kde4_add_unit_test have been converted
 # transitional forward compatibility:
@@ -117,7 +119,11 @@ message(STATUS "Release build: ${RELEASE_BUILD}")
 #############
 ############
 
-option(USEOPENGL "Allow the use of OpenGL for Krita" ON)
+if (APPLE)
+    set(USEOPENGL OFF)
+else()
+    option(USEOPENGL "Allow the use of OpenGL for Krita" ON)
+endif()
 option(PACKAGERS_BUILD "Build support of multiple CPU architectures in one binary. Should be used by packagers only." OFF)
 
  #######################
@@ -172,13 +178,13 @@ calligra_set_productset(${PRODUCTSET})
 find_package(ECM 1.7.0 REQUIRED NOMODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 include(ECMOptionalAddSubdirectory)
-include(ECMInstallIcons)
 include(ECMAddAppIcon)
 include(ECMSetupVersion)
 include(ECMMarkNonGuiExecutable)
 include(ECMGenerateHeaders)
 include(GenerateExportHeader)
 include(ECMMarkAsTest)
+include(ECMInstallIcons)
 
 include(CMakePackageConfigHelpers)
 include(WriteBasicConfigVersionFile)
@@ -228,8 +234,6 @@ set(HAVE_DBUS ${Qt5DBus_FOUND})
 set(QT_QTTEST_LIBRARY Qt5::Test)
 
 if (USEOPENGL)
-    find_package(Qt5 ${MIN_QT_VERSION} REQUIRED OpenGL)
-    set(QT_QTOPENGL_FOUND ${Qt5OpenGL_FOUND})
     if (NOT WIN32 AND NOT APPLE)
         find_package(Qt5 ${MIN_QT_VERSION} REQUIRED X11Extras)
     endif()
@@ -238,10 +242,8 @@ endif ()
 include (MacroLibrary)
 include (MacroAdditionalCleanFiles)
 include (MacroAddFileDependencies)
-include (ECMInstallIcons)
 
 macro_ensure_out_of_source_build("Compiling Calligra inside the source directory is not possible. Please refer to the build instruction http://community.kde.org/Calligra/Building/Building_Calligra")
-
 
 find_package(KF5KIO ${MIN_FRAMEWORKS_VERSION})
 macro_bool_to_01(KF5KIO_FOUND HAVE_KIO)
@@ -308,7 +310,7 @@ find_package(Boost REQUIRED COMPONENTS system) # for pigment and stage
 
 if (APPLE)
     SET(CMAKE_CXX_FLAGS "-stdlib=libstdc++ -std=c++11")
-#   find_package(Carbon REQUIRED)
+#    find_package(Carbon REQUIRED)
 endif ()
 
  ###########################
@@ -364,12 +366,13 @@ if (USEOPENGL)
 
     if(OPENGL_FOUND)
         message(STATUS "Found OpenGL: ${OPENGL_LIBRARIES}")
-        if(QT_QTOPENGL_FOUND)
-            message(STATUS "Found Qt OpenGL support")
+        # TODO: see if there is a better check for QtGui being built with opengl support (and thus the QOpenGL* classes)
+        if(Qt5Gui_OPENGL_IMPLEMENTATION)
+            message(STATUS "Found QtGui OpenGL support")
             set(HAVE_OPENGL 1)
             include_directories(${OPENGL_INCLUDE_DIR})
         else()
-            message(STATUS "Did NOT find Qt OpenGL support. Check your Qt configuration")
+            message(STATUS "Did NOT find QtGui OpenGL support. Check your Qt configuration")
         endif()
     else()
         message(STATUS "Did NOT find OpenGL libraries")

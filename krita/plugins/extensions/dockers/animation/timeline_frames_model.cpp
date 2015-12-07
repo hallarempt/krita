@@ -700,9 +700,7 @@ Qt::ItemFlags TimelineFramesModel::flags(const QModelIndex &index) const
     if (!index.isValid()) return flags;
 
     if (m_d->frameExists(index.row(), index.column())) {
-        if (index.column() > 0 &&
-            data(index, FrameEditableRole).toBool()) {
-
+        if (data(index, FrameEditableRole).toBool()) {
             flags |= Qt::ItemIsDragEnabled;
         }
     }
@@ -843,7 +841,7 @@ void TimelineFramesModel::setScrubState(bool active)
 
         m_d->scrubInProgress = false;
 
-        if (m_d->scrubStartFrame > 0 &&
+        if (m_d->scrubStartFrame >= 0 &&
             m_d->scrubStartFrame != m_d->activeFrameIndex) {
 
             scrubTo(m_d->activeFrameIndex, false);

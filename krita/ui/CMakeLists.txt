@@ -51,7 +51,6 @@ set(kritaui_LIB_SRCS
     canvas/kis_image_patch.cpp
     canvas/kis_image_pyramid.cpp
     canvas/kis_infinity_manager.cpp
-    canvas/kis_animation_player.cpp
     dialogs/kis_about_application.cpp
     dialogs/kis_dlg_adj_layer_props.cc
     dialogs/kis_dlg_adjustment_layer.cc
@@ -329,9 +328,6 @@ set(kritaui_LIB_SRCS
     qtsingleapplication/qtlocalpeer.cpp
     qtsingleapplication/qtsingleapplication.cpp
 
-    kis_animation_frame_cache.cpp
-    kis_animation_cache_populator.cpp
-    kis_animation_exporter.cpp
 
     kis_md5_generator.cpp
     KisApplicationArguments.cpp
@@ -352,6 +348,15 @@ if(WIN32)
         input/wintab/kis_screen_size_choice_dialog.cpp
         qtlockedfile/qtlockedfile_win.cpp
         )
+endif()
+if (HAVE_OPENGL)
+    set(kritaui_LIB_SRCS
+        ${kritaui_LIB_SRCS}
+        kis_animation_frame_cache.cpp
+        kis_animation_cache_populator.cpp
+        canvas/kis_animation_player.cpp
+        kis_animation_exporter.cpp
+    )
 endif()
 
 if(UNIX)
@@ -470,14 +475,14 @@ endif ()
 
 
 if(HAVE_OPENGL)
-    target_link_libraries(kritaui ${OPENGL_LIBRARIES} Qt5::OpenGL ${OPENEXR_LIBRARIES})
+    target_link_libraries(kritaui ${OPENGL_LIBRARIES} ${OPENEXR_LIBRARIES})
 
     # Add VSync disable workaround
     if(NOT WIN32 AND NOT APPLE)
       target_link_libraries(kritaui ${CMAKE_DL_LIBS} Qt5::X11Extras)
     endif()
 
-    set (GL_INTERFACE_LIBRARIES ";${OPENGL_LIBRARIES};Qt5::OpenGL")
+    set (GL_INTERFACE_LIBRARIES ";${OPENGL_LIBRARIES}")
 endif()
 
 if(X11_FOUND)

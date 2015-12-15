@@ -87,7 +87,7 @@ public:
      * Saves a GIMP-compatible representation of this parasite to the device. Also writes the
      * number of brushes (== ncells) (no trailing '\n') */
     bool saveToDevice(QIODevice* dev) const;
-
+    bool loadFromDevice(QIODevice *dev);
 
     enum Placement { DefaultPlacement, ConstantPlacement, RandomPlacement };
 

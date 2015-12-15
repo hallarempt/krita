@@ -21,6 +21,7 @@
 
 #include <QCheckBox>
 #include <QSlider>
+#include <QBuffer>
 
 #include <KoDialog.h>
 #include <kpluginfactory.h>
@@ -32,13 +33,24 @@
 #include <KisDocument.h>
 #include <kis_image.h>
 #include <kis_paint_layer.h>
+#include <kis_spacing_selection_widget.h>
 #include <kis_gbr_brush.h>
 #include <kis_imagepipe_brush.h>
+#include <kis_pipebrush_parasite.h>
 #include <KisAnimatedBrushAnnotation.h>
 #include <KisImportExportManager.h>
 
 #include <ui_wdg_export_gbr.h>
 #include <ui_wdg_export_gih.h>
+
+struct KisBrushExportOptions {
+    qreal spacing;
+    bool mask;
+    int brushStyle;
+    int selectionMode;
+    QString name;
+};
+
 
 K_PLUGIN_FACTORY_WITH_JSON(KisBrushExportFactory, "krita_brush_export.json", registerPlugin<KisBrushExport>();)
 
@@ -65,62 +77,98 @@ KisImportExportFilter::ConversionStatus KisBrushExport::convert(const QByteArray
     if (from != "application/x-krita")
         return KisImportExportFilter::NotImplemented;
 
-
-    KoDialog* dlgBrushExportOptions = new KoDialog(0);
-    dlgBrushExportOptions->setWindowTitle(i18n("Brush Tip Export Options"));
-    dlgBrushExportOptions->setButtons(KoDialog::Ok | KoDialog::Cancel);
-
-
-    KisBrush *brush;
-
-    if (to == "image/x-gimp-brush") {
-        brush = new KisGbrBrush(filename);
-
-        Ui::WdgExportGbr wdgUi;
-        QWidget* wdg = new QWidget(dlgBrushExportOptions);
-        wdgUi.setupUi(wdg);
-        dlgBrushExportOptions->setMainWidget(wdg);
-
+    KisAnnotationSP annotation = input->image()->annotation("ImagePipe Parasite");
+    KisPipeBrushParasite parasite;
+    if (annotation) {
+        QBuffer buf(const_cast<QByteArray*>(&annotation->annotation()));
+        buf.open(QBuffer::ReadOnly);
+        //parasite.loadFromDevice(&buf);
+        buf.close();
     }
-    else if (to == "image/x-gimp-brush-animated") {
-        brush = new KisImagePipeBrush(filename);
+
+    KisBrushExportOptions exportOptions;
+    exportOptions.spacing = 1.0;
+    exportOptions.name = input->image()->objectName();
+    exportOptions.mask = true;
+    exportOptions.selectionMode = 0;
+    exportOptions.brushStyle = 0;
+
+
+    if (input->image()->dynamicPropertyNames().contains("brushspacing")) {
+        exportOptions.spacing = input->image()->property("brushspacing").toFloat();
+    }
+    KisGbrBrush *brush;
+
+    if (!m_chain->manager()->getBatchMode()) {
+
+        KoDialog* dlgBrushExportOptions = new KoDialog(0);
+        dlgBrushExportOptions->setWindowTitle(i18n("Brush Tip Export Options"));
+        dlgBrushExportOptions->setButtons(KoDialog::Ok | KoDialog::Cancel);
 
         Ui::WdgExportGih wdgUi;
         QWidget* wdg = new QWidget(dlgBrushExportOptions);
         wdgUi.setupUi(wdg);
+        wdgUi.spacingWidget->setSpacing(false, exportOptions.spacing);
+        wdgUi.nameLineEdit->setText(exportOptions.name);
         dlgBrushExportOptions->setMainWidget(wdg);
 
-    }
-    else {
-        delete dlgBrushExportOptions;
-        return KisImportExportFilter::BadMimeType;
-    }
 
-    if (!m_chain->manager()->getBatchMode()) {
+        if (to == "image/x-gimp-brush") {
+            brush = new KisGbrBrush(filename);
+            wdgUi.groupBox->setVisible(false);
+        }
+        else if (to == "image/x-gimp-brush-animated") {
+            brush = new KisImagePipeBrush(filename);
+        }
+        else {
+            delete dlgBrushExportOptions;
+            return KisImportExportFilter::BadMimeType;
+        }
+
         if (dlgBrushExportOptions->exec() == QDialog::Rejected) {
             delete dlgBrushExportOptions;
             return KisImportExportFilter::UserCancelled;
+        }
+        else {
+            exportOptions.spacing = wdgUi.spacingWidget->spacing();
+            exportOptions.name = wdgUi.brushNameLbl->text();
+            exportOptions.mask = wdgUi.colorAsMask->isChecked();
+            exportOptions.brushStyle = wdgUi.brushStyle->currentIndex();
+            exportOptions.selectionMode = wdgUi.cmbSelectionMode->currentIndex();
+            delete dlgBrushExportOptions;
         }
     }
     else {
         qApp->processEvents(); // For vector layers to be updated
     }
+
+
     input->image()->waitForDone();
     QRect rc = input->image()->bounds();
     input->image()->refreshGraph();
     input->image()->lock();
-    QImage image = input->image()->projection()->convertToQImage(0, 0, 0, rc.width(), rc.height(), KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
-    input->image()->unlock();
 
+    brush->setName(exportOptions.name);
+    brush->setSpacing(exportOptions.spacing);
+    brush->setUseColorAsMask(exportOptions.mask);
+
+    KisImagePipeBrush *pipeBrush = dynamic_cast<KisImagePipeBrush*>(brush);
+    if (pipeBrush) {
+        // Save the parasite
+        // Save the layers
+    }
+    else {
+        QImage image = input->image()->projection()->convertToQImage(0, 0, 0, rc.width(), rc.height(), KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
+        brush->setImage(image);
+    }
+
+    input->image()->unlock();
 
 
     QFile f(filename);
     f.open(QIODevice::WriteOnly);
-    QDataStream s(&f);
-    s.setByteOrder(QDataStream::LittleEndian);
-
-
-    delete dlgBrushExportOptions;
+    brush->saveToDevice(&f);
+    f.close();
 
     return KisImportExportFilter::OK;
 }

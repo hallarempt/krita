@@ -348,6 +348,7 @@ if(WIN32)
         input/wintab/kis_screen_size_choice_dialog.cpp
         qtlockedfile/qtlockedfile_win.cpp
         )
+      include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 endif()
 if (HAVE_OPENGL)
     set(kritaui_LIB_SRCS
@@ -474,15 +475,15 @@ if(APPLE)
 endif ()
 
 
-if(HAVE_OPENGL)
-    target_link_libraries(kritaui ${OPENGL_LIBRARIES} ${OPENEXR_LIBRARIES})
+if(HAVE_OPENEXR)
+    target_link_libraries(kritaui ${OPENEXR_LIBRARIES})
+endif()
 
+if(HAVE_OPENGL)
     # Add VSync disable workaround
     if(NOT WIN32 AND NOT APPLE)
       target_link_libraries(kritaui ${CMAKE_DL_LIBS} Qt5::X11Extras)
     endif()
-
-    set (GL_INTERFACE_LIBRARIES ";${OPENGL_LIBRARIES}")
 endif()
 
 if(X11_FOUND)

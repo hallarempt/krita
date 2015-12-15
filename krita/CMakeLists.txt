@@ -124,24 +124,28 @@ if (NOT APPLE)
     ecm_add_app_icon(krita_SRCS ICONS ${ICONS_SRCS})
 endif()
 
-qt5_add_resources(krita_SRCS krita.qrc 
-                             pics/Breeze-dark/breeze-dark-icons.qrc
-                             pics/Breeze-light/breeze-light-icons.qrc
-                             pics/layerbox/layerbox-icons.qrc
-                             pics/layerbox/svg/layerbox-svg-icons.qrc
-                             pics/misc-light/misc-light-icons.qrc
-                             pics/misc-dark/misc-dark-icons.qrc
-                             pics/tools/16/tools-16-icons.qrc
-                             pics/tools/SVG/16/tools-svg-16-icons.qrc
-                             pics/tool_transform/tool-transform-icons.qrc
-                             pics/svg/svg-icons.qrc
-                             ${CMAKE_SOURCE_DIR}/libs/flake/flake.qrc
-                             ${CMAKE_SOURCE_DIR}/libs/widgets/kritawidgets.qrc
-                             ${CMAKE_SOURCE_DIR}/pics/icons.qrc
-                             data/aboutdata/aboutdata.qrc
-                             data/shaders/shaders.qrc  
-                             data/cursors/cursors.qrc  
+# separate listing, both used by Krita and KritaSketch
+set(krita_QRCS
+    ${CMAKE_SOURCE_DIR}/krita/krita.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/Breeze-dark/breeze-dark-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/Breeze-light/breeze-light-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/layerbox/layerbox-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/layerbox/svg/layerbox-svg-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/misc-light/misc-light-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/misc-dark/misc-dark-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/tools/16/tools-16-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/tools/SVG/16/tools-svg-16-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/tool_transform/tool-transform-icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/pics/svg/svg-icons.qrc
+    ${CMAKE_SOURCE_DIR}/libs/flake/flake.qrc
+    ${CMAKE_SOURCE_DIR}/libs/widgets/kritawidgets.qrc
+    ${CMAKE_SOURCE_DIR}/pics/icons.qrc
+    ${CMAKE_SOURCE_DIR}/krita/data/aboutdata/aboutdata.qrc
+    ${CMAKE_SOURCE_DIR}/krita/data/shaders/shaders.qrc
+    ${CMAKE_SOURCE_DIR}/krita/data/cursors/cursors.qrc
 )
+
+qt5_add_resources(krita_SRCS ${krita_QRCS})
 
 add_executable(krita ${krita_SRCS})
 target_link_libraries(krita 
@@ -176,6 +180,9 @@ install(PROGRAMS krita.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES  krita.rc DESTINATION ${DATA_INSTALL_DIR}/krita)
 install(FILES  krita.action kritamenu.action DESTINATION ${DATA_INSTALL_DIR}/krita/actions)
 install(FILES  krita.appdata.xml DESTINATION ${SHARE_INSTALL_PREFIX}/appdata/ )
+
+install(DIRECTORY DESTINATION ${DATA_INSTALL_DIR}/krita/shortcuts)
+
 
 if (NOT APPLE AND HAVE_OPENGL AND Qt5Quick_FOUND)
    add_subdirectory(sketch)

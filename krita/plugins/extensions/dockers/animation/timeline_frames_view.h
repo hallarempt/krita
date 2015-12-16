@@ -24,6 +24,7 @@
 
 #include "kritaanimationdocker_export.h"
 
+class KisAction;
 class TimelineWidget;
 
 
@@ -39,10 +40,12 @@ public:
     void updateGeometries();
 
     qreal zoom() const;
+    QMap<QString, KisAction*> globalActions() const;
 
 public Q_SLOTS:
     void setZoom(qreal zoom);
     void setZoomDouble(double zoom);
+    void slotSelectionChanged();
 
 private Q_SLOTS:
     void slotUpdateLayersMenu();
@@ -73,6 +76,8 @@ private:
     void setFramesPerSecond(int fps);
     void slotZoomButtonPressedImpl();
 
+    void updateShowInTimeline();
+
 protected:
     void currentChanged(const QModelIndex &current, const QModelIndex &previous);
     void startDrag(Qt::DropActions supportedActions);
@@ -83,6 +88,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
+    void rowsInserted(const QModelIndex& parent, int start, int end);
 
 private:
     struct Private;

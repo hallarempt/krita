@@ -16,30 +16,27 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef __KIS_OPENGL_CANVAS_DEBUGGER_H
-#define __KIS_OPENGL_CANVAS_DEBUGGER_H
+#ifndef __KIS_XI2_EVENT_FILTER_H
+#define __KIS_XI2_EVENT_FILTER_H
+
+#include <QAbstractNativeEventFilter>
+#include "kritaui_export.h"
 
 #include <QScopedPointer>
 
-
-
-class KisOpenglCanvasDebugger
+class KRITAUI_EXPORT KisXi2EventFilter : public QAbstractNativeEventFilter
 {
 public:
-    KisOpenglCanvasDebugger();
-    ~KisOpenglCanvasDebugger();
+    KisXi2EventFilter();
+    ~KisXi2EventFilter();
 
-    static KisOpenglCanvasDebugger* instance();
+    static KisXi2EventFilter* instance();
 
-    bool showFpsOnCanvas() const;
-
-    void nofityPaintRequested();
-    void nofitySyncStatus(bool value);
-    qreal accumulatedFps();
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
 
 private:
     struct Private;
     const QScopedPointer<Private> m_d;
 };
 
-#endif /* __KIS_OPENGL_CANVAS_DEBUGGER_H */
+#endif /* __KIS_XI2_EVENT_FILTER_H */

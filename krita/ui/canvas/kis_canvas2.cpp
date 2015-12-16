@@ -74,7 +74,7 @@
 #endif
 
 #include "opengl/kis_opengl.h"
-
+#include "kis_fps_decoration.h"
 
 #include <kis_favorite_resource_manager.h>
 #include <kis_popup_palette.h>
@@ -407,6 +407,10 @@ void KisCanvas2::createOpenGLCanvas()
     m_d->frameCache = KisAnimationFrameCache::getFrameCache(canvasWidget->openGLImageTextures());
 
     setCanvasWidget(canvasWidget);
+
+    if (canvasWidget->needsFpsDebugging() && !decoration(KisFpsDecoration::idTag)) {
+        addDecoration(new KisFpsDecoration(imageView()));
+    }
 #else
     qFatal("Bad use of createOpenGLCanvas(). It shouldn't have happened =(");
 #endif
@@ -480,11 +484,6 @@ void KisCanvas2::connectCurrentCanvas()
     setLodAllowedInCanvas(m_d->lodAllowedInCanvas);
 }
 
-void KisCanvas2::disconnectCurrentCanvas()
-{
-    m_d->canvasWidget->disconnectCurrentCanvas();
-}
-
 void KisCanvas2::resetCanvas(bool useOpenGL)
 {
     // we cannot reset the canvas before it's created, but this method might be called,
@@ -499,7 +498,6 @@ void KisCanvas2::resetCanvas(bool useOpenGL)
          m_d->openGLFilterMode != cfg.openGLFilteringMode());
 
     if (needReset) {
-        disconnectCurrentCanvas();
         createCanvas(useOpenGL);
         connectCurrentCanvas();
         notifyZoomChanged();
@@ -873,8 +871,7 @@ void KisCanvas2::setLodAllowedInCanvas(bool value)
 #ifdef HAVE_OPENGL
     m_d->lodAllowedInCanvas =
         value &&
-        m_d->currentCanvasIsOpenGL &&
-        KisOpenGL::supportsGLSL13();
+        m_d->currentCanvasIsOpenGL;
 #else
     Q_UNUSED(value);
     m_d->lodAllowedInCanvas = false;

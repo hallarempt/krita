@@ -101,7 +101,11 @@ void KisAnimationPlayer::connectCancelSignals()
         this, SLOT(slotUpdatePlaybackTimer()));
 
     m_d->cancelStrokeConnections.addConnection(
-        m_d->canvas->image()->animationInterface(), SIGNAL(sigRangeChanged()),
+        m_d->canvas->image()->animationInterface(), SIGNAL(sigFullClipRangeChanged()),
+        this, SLOT(slotUpdatePlaybackTimer()));
+
+    m_d->cancelStrokeConnections.addConnection(
+        m_d->canvas->image()->animationInterface(), SIGNAL(sigPlaybackRangeChanged()),
         this, SLOT(slotUpdatePlaybackTimer()));
 }
 
@@ -115,7 +119,7 @@ void KisAnimationPlayer::slotUpdatePlaybackTimer()
     m_d->timer->stop();
 
     const KisImageAnimationInterface *animation = m_d->canvas->image()->animationInterface();
-    const KisTimeRange &range = animation->currentRange();
+    const KisTimeRange &range = animation->playbackRange();
     if (!range.isValid()) return;
 
     m_d->fps = animation->framerate();

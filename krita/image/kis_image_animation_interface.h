@@ -100,8 +100,11 @@ public:
      * The current time range selected by user.
      * @return current time range
      */
-    const KisTimeRange &currentRange() const;
-    void setRange(const KisTimeRange range);
+    const KisTimeRange& fullClipRange() const;
+    void setFullClipRange(const KisTimeRange range);
+
+    const KisTimeRange &playbackRange() const;
+    void setPlaybackRange(const KisTimeRange range);
 
     int framerate() const;
 
@@ -133,7 +136,8 @@ Q_SIGNALS:
     void sigInternalRequestTimeSwitch(int frameId);
 
     void sigFramerateChanged();
-    void sigRangeChanged();
+    void sigFullClipRangeChanged();
+    void sigPlaybackRangeChanged();
 
 private:
     struct Private;

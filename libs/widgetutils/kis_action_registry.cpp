@@ -308,23 +308,23 @@ bool KisActionRegistry::propertizeAction(const QString &name, QAction * a)
 
 
     // TODO: check for colliding shortcuts, either here, or in loading code
-    //
-    // QMap<QKeySequence, QAction*> existingShortcuts;
-    // Q_FOREACH (QAction* action, actionCollection->actions()) {
-    //     if(action->shortcut() == QKeySequence(0)) {
-    //         continue;
-    //     }
-    //     if (existingShortcuts.contains(action->shortcut())) {
-    //         dbgAction << QString("Actions %1 and %2 have the same shortcut: %3") \
-    //             .arg(action->text())                                             \
-    //             .arg(existingShortcuts[action->shortcut()]->text())              \
-    //             .arg(action->shortcut());
-    //     }
-    //     else {
-    //         existingShortcuts[action->shortcut()] = action;
-    //     }
-    // }
-
+#if 0
+     QMap<QKeySequence, QAction*> existingShortcuts;
+     Q_FOREACH (QAction* action, actionCollection->actions()) {
+         if(action->shortcut() == QKeySequence(0)) {
+             continue;
+         }
+         if (existingShortcuts.contains(action->shortcut())) {
+             dbgAction << QString("Actions %1 and %2 have the same shortcut: %3") \
+                 .arg(action->text())                                             \
+                 .arg(existingShortcuts[action->shortcut()]->text())              \
+                 .arg(action->shortcut());
+         }
+         else {
+             existingShortcuts[action->shortcut()] = action;
+         }
+     }
+#endif
 
     return true;
 }
@@ -345,12 +345,17 @@ QString KisActionRegistry::getActionProperty(const QString &name, const QString 
 }
 
 
-void KisActionRegistry::writeCustomShortcuts() const
+void KisActionRegistry::writeCustomShortcuts(KConfigBase *config) const
 {
-    KConfigGroup cg(KSharedConfig::openConfig("kritashortcutsrc"),
-                    QStringLiteral("Shortcuts"));
 
-    QList<QAction *> writeActions;
+    KConfigGroup cg;
+    if (config == 0) {
+        cg = KConfigGroup(KSharedConfig::openConfig("kritashortcutsrc"),
+                          QStringLiteral("Shortcuts"));
+    } else {
+        cg = KConfigGroup(config, QStringLiteral("Shortcuts"));
+    }
+
     for (auto it = d->actionInfoList.constBegin();
          it != d->actionInfoList.constEnd(); ++it) {
 

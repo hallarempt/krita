@@ -21,7 +21,7 @@ include_directories(
     ${EXIV2_INCLUDE_DIR}
     ${OCIO_INCLUDE_DIR})
 
-#add_subdirectory( tests )
+add_subdirectory( tests )
 
 if (APPLE)
     find_library(FOUNDATION_LIBRARY Foundation)
@@ -243,6 +243,7 @@ set(kritaui_LIB_SRCS
     input/kis_alternate_invocation_action.cpp
     input/kis_rotate_canvas_action.cpp
     input/kis_zoom_action.cpp
+    input/kis_change_frame_action.cpp
     input/kis_gamma_exposure_action.cpp
     input/kis_show_palette_action.cpp
     input/kis_change_primary_setting_action.cpp

@@ -19,7 +19,7 @@
 #include "kis_animation_exporter_test.h"
 #include "kis_animation_exporter.h"
 
-#include <qtest_kde.h>
+#include <QTest>
 #include <testutil.h>
 #include "KisPart.h"
 #include "kis_image.h"
@@ -44,7 +44,7 @@ void KisAnimationExporterTest::testAnimationExport()
 
     rasterChannel->addKeyframe(1, &parentCommand);
     rasterChannel->addKeyframe(2, &parentCommand);
-    p.image->animationInterface()->setRange(KisTimeRange::fromTime(0, 2));
+    p.image->animationInterface()->setFullClipRange(KisTimeRange::fromTime(0, 2));
 
     KisPaintDeviceSP dev = p.layer->paintDevice();
 
@@ -96,6 +96,6 @@ void KisAnimationExporterTest::testAnimationExport()
     */
 }
 
-QTEST_KDEMAIN(KisAnimationExporterTest, GUI)
+QTEST_MAIN(KisAnimationExporterTest)
 #include "kis_animation_exporter_test.moc"
 

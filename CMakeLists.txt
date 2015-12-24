@@ -23,6 +23,10 @@ if (POLICY CMP0026)
     cmake_policy(SET CMP0026 OLD)
 endif()
 
+if (POLICY CMP0042)
+    cmake_policy(SET CMP0042 NEW)
+endif()
+
 if (POLICY CMP0046)
     cmake_policy(SET CMP0046 OLD)
 endif ()
@@ -43,7 +47,14 @@ if (POLICY CMP0064)
     cmake_policy(SET CMP0064 OLD)
 endif()
 
-set(APPLE_SUPPRESS_X11_WARNING TRUE)
+
+if (APPLE)
+    set(APPLE_SUPPRESS_X11_WARNING TRUE)
+    set(CMAKE_MACOSX_RPATH ON)
+    SET(CMAKE_SKIP_BUILD_RPATH TRUE)
+    SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+    SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+endif ()
 
 # QT5TODO: remove KDE4_BUILD_TESTS once all kde4_add_unit_test have been converted
 # transitional forward compatibility:
@@ -389,7 +400,6 @@ if (USEOPENGL)
     if(Qt5Gui_OPENGL_IMPLEMENTATION)
         message(STATUS "Found QtGui OpenGL support")
         set(HAVE_OPENGL 1)
-        include_directories(${OPENGL_INCLUDE_DIR})
     else()
         message(STATUS "Did NOT find QtGui OpenGL support. Check your Qt configuration")
     endif()
@@ -634,22 +644,8 @@ set(VECTORIMAGE_INCLUDES
                    ${CMAKE_SOURCE_DIR}/libs/vectorimage/libsvm
                    ${CMAKE_SOURCE_DIR}/libs/vectorimage/libwmf)
 
-# KoText depends on koplugin, odf
-set(KOTEXT_INCLUDES ${CMAKE_SOURCE_DIR}/libs/kotext
-                   ${CMAKE_BINARY_DIR}/libs/kotext
-                   ${CMAKE_SOURCE_DIR}/libs/kotext/changetracker
-                   ${CMAKE_SOURCE_DIR}/libs/kotext/styles
-                   ${CMAKE_SOURCE_DIR}/libs/kotext/opendocument
-                   ${FLAKE_INCLUDES}
-                   ${KOODF_INCLUDES})
-
-# TextLayout depends on kotext
-set(TEXTLAYOUT_INCLUDES ${KOTEXT_INCLUDES}
-                   ${CMAKE_SOURCE_DIR}/libs/textlayout
-                   ${CMAKE_BINARY_DIR}/libs/textlayout)
-
 # Widgets depends on kritatext and flake
-set(KOWIDGETS_INCLUDES ${KOTEXT_INCLUDES}
+set(KOWIDGETS_INCLUDES ${FLAKE_INCLUDES}
                    ${CMAKE_SOURCE_DIR}/libs/widgetutils
                    ${CMAKE_BINARY_DIR}/libs/widgetutils
                    ${CMAKE_SOURCE_DIR}/libs/widgets

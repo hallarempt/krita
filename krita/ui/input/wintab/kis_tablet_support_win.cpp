@@ -77,7 +77,6 @@ enum {
 QWindowsTabletSupport *QTAB = 0;
 static QWidget *targetWindow = 0; //< Window receiving last tablet event
 static QWidget *qt_tablet_target = 0; //< Widget receiving last tablet event
-static qreal dpr = 0; //< Device pixel ratio - preferably update dynamically
 
 HWND createDummyWindow(const QString &className, const wchar_t *windowName, WNDPROC wndProc)
 {
@@ -199,7 +198,6 @@ void KisTabletSupportWin::init()
 {
     globalEventEater = new EventEater(qApp);
     QTAB = QWindowsTabletSupport::create();
-    dpr = qApp->primaryScreen()->devicePixelRatio();
     qApp->installEventFilter(globalEventEater);
 }
 
@@ -213,7 +211,6 @@ static void handleTabletEvent(QWidget *windowWidget, const QPointF &local, const
                                qreal pressure,int xTilt, int yTilt, qreal tangentialPressure, qreal rotation,
                                int z, qint64 uniqueId, Qt::KeyboardModifiers modifiers, QEvent::Type type)
 {
-    static QPlatformScreen *platformScreen = qApp->primaryScreen()->handle();
 
     // Lock in target window
     if (type == QEvent::TabletPress) {
@@ -267,24 +264,26 @@ static void handleTabletEvent(QWidget *windowWidget, const QPointF &local, const
             // Turn off eventEater send a synthetic mouse event.
             // dbgInput << "Tablet event" << type << "rejected; sending mouse event to" << finalDestination;
             globalEventEater->deactivate();
-            // QMouseEvent m(mouseEventType(type), mapped, button, buttons, modifiers);
-            // QGuiApplication::sendEvent(finalDestination, &m);
+            qt_tablet_target = 0;
 
             // We shouldn't ever get a widget accepting a tablet event from this
             // call, so we won't worry about any interactions with our own
             // widget-locking code.
-            QWindow *target = platformScreen->topLevelAt(globalPos);
-            if (!target) return;
-            QPointF windowLocal = global - QPointF(target->mapFromGlobal(QPoint())) + delta;
-            QWindowSystemInterface::handleTabletEvent(target, ev.timestamp(), windowLocal,
-                                                      global, device, pointerType,
-                                                      buttons, pressure, xTilt, yTilt,
-                                                      tangentialPressure, rotation, z,
-                                                      uniqueId, modifiers);
+            // QWindow *target = platformScreen->topLevelAt(globalPos);
+            // if (!target) return;
+            // QPointF windowLocal = global - QPointF(target->mapFromGlobal(QPoint())) + delta;
+            // QWindowSystemInterface::handleTabletEvent(target, ev.timestamp(), windowLocal,
+            //                                           global, device, pointerType,
+            //                                           buttons, pressure, xTilt, yTilt,
+            //                                           tangentialPressure, rotation, z,
+            //                                           uniqueId, modifiers);
 
         }
+    } else {
+        globalEventEater->deactivate();
+        qt_tablet_target = 0;
+        targetWindow = 0;
     }
-
 }
 
 /**
@@ -649,13 +648,14 @@ QWindowsTabletDeviceData QWindowsTabletSupport::tabletInit(const quint64 uniqueI
 
 bool QWindowsTabletSupport::translateTabletProximityEvent(WPARAM /* wParam */, LPARAM lParam)
 {
+
     auto sendProximityEvent = [&](QEvent::Type type) {
         QPointF emptyPos;
         qreal zero = 0.0;
         QTabletEvent e(type, emptyPos, emptyPos, 0, m_devices.at(m_currentDevice).currentPointerType,
                        zero, 0, 0, zero, zero, 0, Qt::NoModifier,
                        m_devices.at(m_currentDevice).uniqueId, Qt::NoButton, (Qt::MouseButtons)0);
-        qApp->sendEvent(qApp->activeWindow(), &e);
+        qApp->sendEvent(qApp, &e);
     };
 
     if (!LOWORD(lParam)) {
@@ -701,7 +701,6 @@ bool QWindowsTabletSupport::translateTabletPacketEvent()
 
     static DWORD btnNew, btnOld, btnChange;
 
-    // NOTE: We disabled Qt's icky hack.
     // The tablet can be used in 2 different modes, depending on its settings:
     // 1) Absolute (pen) mode:
     //    The coordinates are scaled to the virtual desktop (by default). The user
@@ -714,7 +713,15 @@ bool QWindowsTabletSupport::translateTabletPacketEvent()
     //    in which case we snap the position to the mouse position.
     // It seems there is no way to find out the mode programmatically, the LOGCONTEXT orgX/Y/Ext
     // area is always the virtual desktop.
-    const QRect virtualDesktopArea = mapToNative(qApp->primaryScreen()->virtualGeometry(), dpr);
+    const QPlatformScreen *platformScreen = qApp->primaryScreen()->handle();
+    const qreal dpr = qApp->primaryScreen()->devicePixelRatio();
+
+    QRect virtualDesktopArea = platformScreen->geometry();
+    Q_FOREACH(auto s, platformScreen->virtualSiblings()) {
+        virtualDesktopArea |= s->geometry();
+    }
+
+
 
     const Qt::KeyboardModifiers keyboardModifiers = QApplication::queryKeyboardModifiers();
 
@@ -750,16 +757,19 @@ bool QWindowsTabletSupport::translateTabletPacketEvent()
         QPoint globalPos = globalPosF.toPoint();
 
         // Find top-level window
-        QWidget *w = targetWindow; // Pass to window that grabbed it.
-        if (!w) w = qApp->activePopupWidget();
-        if (!w) w = qApp->activeModalWidget();
-        if (!w) w = qApp->topLevelAt(globalPos);
-        if (!w) w = qApp->activeWindow();
-        if (!w) continue;
+        QWidget *w = targetWindow; // If we had a target already, use it.
+        if (!w) {
+            w = qApp->activePopupWidget();
+            if (!w) w = qApp->activeModalWidget();
+            if (!w) w = qApp->topLevelAt(globalPos);
+            if (!w) continue;
+            w = w->window();
+        }
 
-        w = w->window();
 
         const QPoint localPos = w->mapFromGlobal(globalPos);
+        const QPointF delta = globalPosF - globalPos;
+        const QPointF localPosF = globalPosF + QPointF(localPos - globalPos) + delta;
 
         const qreal pressureNew = packet.pkButtons && (currentPointerType == QTabletEvent::Pen || currentPointerType == QTabletEvent::Eraser) ?
                                   m_devices.at(m_currentDevice).scalePressure(packet.pkNormalPressure) :
@@ -801,8 +811,8 @@ bool QWindowsTabletSupport::translateTabletPacketEvent()
                 << tiltY << "tanP:" << tangentialPressure << "rotation:" << rotation;
         }
 
-        // Device independent pixels
-        const QPointF localPosDip = QPointF(localPos / dpr);
+        // Convert from "native" to "device independent pixels"
+        const QPointF localPosDip = localPosF / dpr;
         const QPointF globalPosDip = globalPosF / dpr;
 
 
@@ -872,20 +882,20 @@ void QWindowsTabletSupport::tabletUpdateCursor(const quint64 uniqueId,
 
     // Check tablet name to enable Surface Pro 3 workaround.
 #ifdef UNICODE
-    UINT nameLength = QWindowsTabletSupport::m_winTab32DLL.wTInfo(WTI_DEVICES, DVC_NAME, 0);
-    TCHAR* dvcName = new TCHAR[nameLength + 1];
-    QWindowsTabletSupport::m_winTab32DLL.wTInfo(WTI_DEVICES, DVC_NAME, dvcName);
-    QString qDvcName = QString::fromWCharArray((const wchar_t*)dvcName);
-    dbgInput << "DVC_NAME =" << qDvcName;
-    // Name changed between older and newer Surface Pro 3 drivers
-    if (qDvcName == QString::fromLatin1("N-trig DuoSense device") ||
-        qDvcName == QString::fromLatin1("Microsoft device")) {
-        dbgInput << "This looks like a Surface Pro 3. Enabling eraser workaround.";
-        isSurfacePro3 = true;
-    } else {
-        isSurfacePro3 = false;
+    if (!isSurfacePro3) {
+        UINT nameLength = QWindowsTabletSupport::m_winTab32DLL.wTInfo(WTI_DEVICES, DVC_NAME, 0);
+        TCHAR* dvcName = new TCHAR[nameLength + 1];
+        QWindowsTabletSupport::m_winTab32DLL.wTInfo(WTI_DEVICES, DVC_NAME, dvcName);
+        QString qDvcName = QString::fromWCharArray((const wchar_t*)dvcName);
+        dbgInput << "DVC_NAME =" << qDvcName;
+        // Name changed between older and newer Surface Pro 3 drivers
+        if (qDvcName == QString::fromLatin1("N-trig DuoSense device") ||
+            qDvcName == QString::fromLatin1("Microsoft device")) {
+            dbgInput << "This looks like a Surface Pro 3. Enabling eraser workaround.";
+            isSurfacePro3 = true;
+        }
+        delete[] dvcName;
     }
-    delete[] dvcName;
 #endif
 }
 

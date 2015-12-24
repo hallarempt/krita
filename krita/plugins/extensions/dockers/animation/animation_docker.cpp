@@ -34,10 +34,24 @@
 #include "kis_animation_utils.h"
 #include "krita_utils.h"
 #include "kis_image_config.h"
+#include "kis_config.h"
 #include "kis_signals_blocker.h"
 
 
 #include "ui_wdg_animation.h"
+
+void setupActionButton(const QString &text,
+                       KisAction::ActivationFlags flags,
+                       bool defaultValue,
+                       QToolButton *button,
+                       KisAction **action)
+{
+    *action = new KisAction(text, button);
+    (*action)->setActivationFlags(flags);
+    (*action)->setCheckable(true);
+    (*action)->setChecked(defaultValue);
+    button->setDefaultAction(*action);
+}
 
 AnimationDocker::AnimationDocker()
     : QDockWidget(i18n("Animation"))
@@ -91,16 +105,23 @@ AnimationDocker::AnimationDocker()
     m_deleteKeyframeAction->setActivationFlags(KisAction::ACTIVE_LAYER);
     m_animationWidget->btnDeleteKeyframe->setDefaultAction(m_deleteKeyframeAction);
 
-    m_lazyFrameAction = new KisAction(KisAnimationUtils::lazyFrameCreationActionName, m_animationWidget->btnLazyFrame);
-    m_lazyFrameAction->setActivationFlags(KisAction::ACTIVE_IMAGE);
-    m_lazyFrameAction->setCheckable(true);
-
     {
         KisImageConfig cfg;
-        m_lazyFrameAction->setChecked(cfg.lazyFrameCreationEnabled());
+        setupActionButton(KisAnimationUtils::lazyFrameCreationActionName,
+                          KisAction::ACTIVE_IMAGE,
+                          cfg.lazyFrameCreationEnabled(),
+                          m_animationWidget->btnLazyFrame,
+                          &m_lazyFrameAction);
     }
 
-    m_animationWidget->btnLazyFrame->setDefaultAction(m_lazyFrameAction);
+    {
+        KisConfig cfg;
+        setupActionButton(KisAnimationUtils::dropFramesActionName,
+                          KisAction::ACTIVE_IMAGE,
+                          cfg.animationDropFrames(),
+                          m_animationWidget->btnDropFrames,
+                          &m_dropFramesAction);
+    }
 
     QFont font;
     font.setPointSize(1.7 * font.pointSize());
@@ -122,6 +143,7 @@ AnimationDocker::AnimationDocker()
     connect(m_addDuplicateFrameAction, SIGNAL(triggered()), this, SLOT(slotAddDuplicateFrame()));
     connect(m_deleteKeyframeAction, SIGNAL(triggered()), this, SLOT(slotDeleteKeyframe()));
     connect(m_lazyFrameAction, SIGNAL(toggled(bool)), this, SLOT(slotLazyFrameChanged(bool)));
+    connect(m_dropFramesAction, SIGNAL(toggled(bool)), this, SLOT(slotDropFramesChanged(bool)));
 
     m_animationWidget->btnOnionSkinOptions->setToolTip(i18n("Onion Skins"));
     connect(m_animationWidget->btnOnionSkinOptions, SIGNAL(clicked()), this, SLOT(slotOnionSkinOptions()));
@@ -165,6 +187,7 @@ void AnimationDocker::setCanvas(KoCanvasBase * canvas)
         connect(m_canvas->animationPlayer(), SIGNAL(sigFrameChanged()), this, SLOT(slotGlobalTimeChanged()));
         connect(m_canvas->animationPlayer(), SIGNAL(sigPlaybackStopped()), this, SLOT(slotGlobalTimeChanged()));
         connect(m_canvas->animationPlayer(), SIGNAL(sigPlaybackStopped()), this, SLOT(updatePlayPauseIcon()));
+        connect(m_canvas->animationPlayer(), SIGNAL(sigPlaybackStatisticsUpdated()), this, SLOT(updateDropFramesIcon()));
         connect(m_animationWidget->doublePlaySpeed,
                 SIGNAL(valueChanged(double)),
                 m_canvas->animationPlayer(),
@@ -193,6 +216,7 @@ void AnimationDocker::setMainWindow(KisViewManager *view)
     actionManager->addAction("last_frame", m_lastFrameAction);
 
     actionManager->addAction("lazy_frame", m_lazyFrameAction);
+    actionManager->addAction("drop_frames", m_dropFramesAction);
 
     actionManager->addAction("toggle_playback", m_playPauseAction);
     actionManager->addAction("add_blank_frame", m_addBlankFrameAction);
@@ -431,6 +455,53 @@ void AnimationDocker::updateLazyFrameIcon()
                                .arg(KritaUtils::toLocalizedOnOff(value)));
 }
 
+void AnimationDocker::updateDropFramesIcon()
+{
+    qreal effectiveFps = 0.0;
+    qreal realFps = 0.0;
+    qreal framesDropped = 0.0;
+    bool isPlaying = false;
+
+    KisAnimationPlayer *player =
+        m_canvas && m_canvas->animationPlayer() ?
+        m_canvas->animationPlayer() : 0;
+
+    if (player) {
+        effectiveFps = player->effectiveFps();
+        realFps = player->realFps();
+        framesDropped = player->framesDroppedPortion();
+        isPlaying = player->isPlaying();
+    }
+
+    KisConfig cfg;
+    const bool value = cfg.animationDropFrames();
+
+    m_dropFramesAction->setIcon(value ?
+                                KisIconUtils::loadIcon(framesDropped > 0.05 ? "droppedframes" : "dropframe") :
+                                KisIconUtils::loadIcon("dropframe"));
+
+
+    QString text;
+
+    if (!isPlaying) {
+        text = QString("%1 (%2)")
+            .arg(KisAnimationUtils::dropFramesActionName)
+            .arg(KritaUtils::toLocalizedOnOff(value));
+    } else {
+        text = QString("%1 (%2)\n"
+                       "%3\n"
+                       "%4\n"
+                       "%5")
+            .arg(KisAnimationUtils::dropFramesActionName)
+            .arg(KritaUtils::toLocalizedOnOff(value))
+            .arg(i18n("Effective FPS:\t%1", effectiveFps))
+            .arg(i18n("Real FPS:\t%1", realFps))
+            .arg(i18n("Frames dropped:\t%1\%", framesDropped * 100));
+    }
+
+    m_dropFramesAction->setText(text);
+}
+
 void AnimationDocker::slotUpdateIcons()
 {
     m_previousFrameAction->setIcon(KisIconUtils::loadIcon("prevframe"));
@@ -448,6 +519,7 @@ void AnimationDocker::slotUpdateIcons()
     m_deleteKeyframeAction->setIcon(KisIconUtils::loadIcon("deletekeyframe"));
 
     updateLazyFrameIcon();
+    updateDropFramesIcon();
 
     m_animationWidget->btnOnionSkinOptions->setIcon(KisIconUtils::loadIcon("onion_skin_options"));
     m_animationWidget->btnOnionSkinOptions->setIconSize(QSize(22, 22));
@@ -465,6 +537,7 @@ void AnimationDocker::slotUpdateIcons()
     m_animationWidget->btnAddDuplicateFrame->setIconSize(QSize(22, 22));
     m_animationWidget->btnDeleteKeyframe->setIconSize(QSize(22, 22));
     m_animationWidget->btnLazyFrame->setIconSize(QSize(22, 22));
+    m_animationWidget->btnDropFrames->setIconSize(QSize(22, 22));
 }
 
 void AnimationDocker::slotLazyFrameChanged(bool value)
@@ -474,6 +547,16 @@ void AnimationDocker::slotLazyFrameChanged(bool value)
     if (value != cfg.lazyFrameCreationEnabled()) {
         cfg.setLazyFrameCreationEnabled(value);
         updateLazyFrameIcon();
+    }
+}
+
+void AnimationDocker::slotDropFramesChanged(bool value)
+{
+    KisConfig cfg;
+
+    if (value != cfg.animationDropFrames()) {
+        cfg.setAnimationDropFrames(value);
+        updateDropFramesIcon();
     }
 }
 

@@ -1,7 +1,7 @@
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 include_directories(  ${KRITA_INCLUDES}   ${CMAKE_SOURCE_DIR}/krita/sdk/tests )
 
-add_subdirectory(scratchpad)
+#add_subdirectory(scratchpad)
 
 macro_add_unittest_definitions()
 
@@ -163,9 +163,9 @@ set_tests_properties(krita-ui-KisZoomAndPanTest PROPERTIES TIMEOUT 300)
 
 ########### next target ###############
 
-set(kis_input_manager_test_SRCS kis_input_manager_test.cpp ../../sdk/tests/testutil.cpp)
-kde4_add_unit_test(KisInputManagerTest TESTNAME krita-ui-KisInputManagerTest  ${kis_input_manager_test_SRCS})
-target_link_libraries(KisInputManagerTest    kritaui kritaimage Qt5::Test)
+# set(kis_input_manager_test_SRCS kis_input_manager_test.cpp ../../sdk/tests/testutil.cpp)
+# kde4_add_unit_test(KisInputManagerTest TESTNAME krita-ui-KisInputManagerTest  ${kis_input_manager_test_SRCS})
+# target_link_libraries(KisInputManagerTest    kritaui kritaimage Qt5::Test)
 
 ########### next target ###############
 
@@ -203,6 +203,8 @@ set(kis_asl_layer_style_serializer_test_SRCS kis_asl_layer_style_serializer_test
 kde4_add_unit_test(KisAslLayerStyleSerializerTest TESTNAME krita-ui-KisAslLayerStyleSerializerTest ${kis_asl_layer_style_serializer_test_SRCS})
 target_link_libraries(KisAslLayerStyleSerializerTest kritaui kritaimage ${QT_QTTEST_LIBRARY})
 
+if (HAVE_OPENGL)
+
 ########### next target ###############
 
 set(kis_animation_exporter_test_SRCS kis_animation_exporter_test.cpp )
@@ -214,3 +216,5 @@ target_link_libraries(KisAnimationExporterTest kritaui kritaimage ${QT_QTTEST_LI
 set(kis_animation_frame_cache_test_SRCS kis_animation_frame_cache_test.cpp )
 kde4_add_unit_test(KisAnimationFrameCacheTest TESTNAME kritaui-animation_frame_cache_test ${kis_animation_frame_cache_test_SRCS})
 target_link_libraries(KisAnimationFrameCacheTest kritaui kritaimage ${QT_QTTEST_LIBRARY})
+
+endif ()

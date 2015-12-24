@@ -46,21 +46,27 @@ public:
 
     void forcedStopOnExit();
 
+    qreal effectiveFps() const;
+    qreal realFps() const;
+    qreal framesDroppedPortion() const;
+
 public Q_SLOTS:
     void slotUpdate();
     void slotCancelPlayback();
     void slotCancelPlaybackSafe();
     void slotUpdatePlaybackSpeed(double value);
     void slotUpdatePlaybackTimer();
+    void slotUpdateDropFramesMode();
 
 Q_SIGNALS:
     void sigFrameChanged();
     void sigPlaybackStopped();
+    void sigPlaybackStatisticsUpdated();
 
 private:
     void connectCancelSignals();
     void disconnectCancelSignals();
-    void uploadFrame(int frame);
+    void uploadFrame(int time);
 
 private:
     struct Private;

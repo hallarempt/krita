@@ -518,14 +518,6 @@ bool QXcbConnection::xi2HandleEvent(xcb_ge_event_t *event)
 }
 
 #ifdef XCB_USE_XINPUT22
-static qreal valuatorNormalized(double value, XIValuatorClassInfo *vci)
-{
-    if (value > vci->max)
-        value = vci->max;
-    if (value < vci->min)
-        value = vci->min;
-    return (value - vci->min) / (vci->max - vci->min);
-}
 
 bool QXcbConnection::xi2SetMouseGrabEnabled(xcb_window_t w, bool grab)
 {
@@ -654,27 +646,6 @@ void QXcbConnection::updateScrollingDevice(ScrollingDevice &scrollingDevice, int
     Q_UNUSED(scrollingDevice);
     Q_UNUSED(num_classes);
     Q_UNUSED(classInfo);
-#endif
-}
-
-void QXcbConnection::handleEnterEvent(const xcb_enter_notify_event_t *)
-{
-#ifdef XCB_USE_XINPUT21
-    QHash<int, ScrollingDevice>::iterator it = m_scrollingDevices.begin();
-    const QHash<int, ScrollingDevice>::iterator end = m_scrollingDevices.end();
-    while (it != end) {
-        ScrollingDevice& scrollingDevice = it.value();
-        int nrDevices = 0;
-        XIDeviceInfo* xiDeviceInfo = XIQueryDevice(static_cast<Display *>(m_xlib_display), scrollingDevice.deviceId, &nrDevices);
-        if (nrDevices <= 0) {
-            qCDebug(lcQpaXInputDevices, "scrolling device %d no longer present", scrollingDevice.deviceId);
-            it = m_scrollingDevices.erase(it);
-            continue;
-        }
-        updateScrollingDevice(scrollingDevice, xiDeviceInfo->num_classes, xiDeviceInfo->classes);
-        XIFreeDeviceInfo(xiDeviceInfo);
-        ++it;
-    }
 #endif
 }
 
@@ -902,11 +873,14 @@ void QXcbConnection::xi2ReportTabletEvent(TabletData &tabletData, void *event)
             fixed1616ToReal(ev->root_x), fixed1616ToReal(ev->root_y),
             (int)tabletData.buttons, pressure, xTilt, yTilt, rotation);
 
+    Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
+
     QWindowSystemInterface::handleTabletEvent(window, local, global,
                                               tabletData.tool, tabletData.pointerType,
                                               tabletData.buttons, pressure,
                                               xTilt, yTilt, tangentialPressure,
-                                              rotation, 0, tabletData.serialId);
+                                              rotation, 0, tabletData.serialId,
+                                              modifiers);
 }
 
 #endif // QT_NO_TABLETEVENT
